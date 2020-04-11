@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lichuanqi.github.io</id>
-    <title>Gridea</title>
-    <updated>2020-04-11T05:19:56.330Z</updated>
+    <title>李传奇的主页</title>
+    <updated>2020-04-11T05:29:21.397Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lichuanqi.github.io"/>
     <link rel="self" href="https://lichuanqi.github.io/atom.xml"/>
     <subtitle>温故而知新</subtitle>
     <logo>https://lichuanqi.github.io/images/avatar.png</logo>
     <icon>https://lichuanqi.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, Gridea</rights>
+    <rights>All rights reserved 2020, 李传奇的主页</rights>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://lichuanqi.github.io/post/hello-gridea/</id>
