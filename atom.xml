@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lichuanqi.github.io</id>
     <title>李传奇的主页</title>
-    <updated>2020-04-11T05:29:21.397Z</updated>
+    <updated>2020-04-13T14:08:10.240Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lichuanqi.github.io"/>
     <link rel="self" href="https://lichuanqi.github.io/atom.xml"/>
@@ -10,6 +10,13 @@
     <logo>https://lichuanqi.github.io/images/avatar.png</logo>
     <icon>https://lichuanqi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 李传奇的主页</rights>
+    <entry>
+        <title type="html"><![CDATA[Deepin中用Python+you-get下载腾讯视频、B站等网页视频]]></title>
+        <id>https://lichuanqi.github.io/post/deepin-zhong-yong-pythonyou-get-xia-zai-teng-xun-shi-pin-b-zhan-deng-wang-ye-shi-pin/</id>
+        <link href="https://lichuanqi.github.io/post/deepin-zhong-yong-pythonyou-get-xia-zai-teng-xun-shi-pin-b-zhan-deng-wang-ye-shi-pin/">
+        </link>
+        <updated>2020-04-13T14:06:27.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://lichuanqi.github.io/post/hello-gridea/</id>

@@ -2,23 +2,20 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>关于 | 李传奇的主页</title>
+<title>Deepin中用Python+you-get下载腾讯视频、B站等网页视频 | 李传奇的主页</title>
 <link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1586786887302">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://lichuanqi.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="关于 | 李传奇的主页 - Atom Feed" href="https://lichuanqi.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="Deepin中用Python+you-get下载腾讯视频、B站等网页视频 | 李传奇的主页 - Atom Feed" href="https://lichuanqi.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="
-欢迎来到我的小站呀，很高兴遇见你！🤝
-
-🏠 关于本站
-👨‍💻 博主是谁
-⛹ 兴趣爱好
-📬 联系我呀
-..." />
+    <meta name="description" content="关于
+You-get是一个python库，主要功能是下载网页视频
+Web：https://you-get.org/
+Github：https://github.com/soimort/you-get
+支持的网站很多，这里只列举一下我尝试过的..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -89,37 +86,62 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              关于
+              Deepin中用Python+you-get下载腾讯视频、B站等网页视频
             </h2>
             <div class="post-info">
               <span>
-                2019-01-25
+                2020-04-13
               </span>
               <span>
-                1 min read
+                2 min read
               </span>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<h2 id="联系我呀">📬 联系我呀</h2>
+                <h1 id="关于">关于</h1>
+<p>You-get是一个python库，主要功能是下载网页视频<br>
+Web：https://you-get.org/<br>
+Github：https://github.com/soimort/you-get<br>
+支持的网站很多，这里只列举一下我尝试过的：腾讯视频、bilibili（B站）<br>
+<img src="https://lichuanqi.github.io/post-images/1586786836778.png" alt="" loading="lazy"></p>
+<h1 id="安装">安装</h1>
+<p>You-get依赖FFmpeg库，deepin自带已经安装好了，这是一个音视频处理的库，不安装的话可能会出现下载的音视频分离、没有声音等。<br>
+使用清华源镜像下载you-get<br>
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple you-get</p>
+<h1 id="使用">使用</h1>
+<p>you-get https://v.qq.com/x/cover/34rg8ntemeszdm4/j0613bozdsx.html<br>
+下载过程中，使用Ctrl+C 可以暂停下载，会保存一个临时文件，下次使用相同的下载参数下载文件时会从上一次暂停的位置继续下载。</p>
+<h1 id="进阶技巧">进阶技巧</h1>
+<h2 id="解析链接中的视频信息">解析链接中的视频信息</h2>
+<p>you-get -i 视频链接<br>
+you-get -i https://v.qq.com/x/cover/34rg8ntemeszdm4/j0613bozdsx.html<br>
+ ## 指定视频保存地址<br>
+you-get -o 视频保存地址 -i 视频链接<br>
+you-get -o D:/  https://v.qq.com/x/cover/34rg8ntemeszdm4/j0613bozdsx.html</p>
+<h2 id="下载指定画质的视频">下载指定画质的视频</h2>
+<p>需要先使用-i获取视频信息，带有DEFAULT字样的为默认下载画质，当有多个画质可以选择时会有提示参数 download-with: --format<mark>mp4hd<br>
+you-get --format</mark>mp4hd 视频链接</p>
+<h2 id="获取视频真实地址">获取视频真实地址</h2>
+<p>you-get -u 视频链接<br>
+you-get -u https://v.qq.com/x/cover/34rg8ntemeszdm4/j0613bozdsx.html</p>
+<h2 id="加载cookie">加载COOKIE</h2>
+<p>很多网站是需要登录才可以访问视频内容的，比如很多在线教育网站。这个时候就需要我们提交cookie信息<br>
+you-get -c cookies.txt</p>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
-<li>
+<li><a href="#%E5%85%B3%E4%BA%8E">关于</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85">安装</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8">使用</a></li>
+<li><a href="#%E8%BF%9B%E9%98%B6%E6%8A%80%E5%B7%A7">进阶技巧</a>
 <ul>
-<li><a href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99">🏠 关于本站</a></li>
-<li><a href="#%E5%8D%9A%E4%B8%BB%E6%98%AF%E8%B0%81">👨‍💻 博主是谁</a></li>
-<li><a href="#%E5%85%B4%E8%B6%A3%E7%88%B1%E5%A5%BD">⛹ 兴趣爱好</a></li>
-<li><a href="#%E8%81%94%E7%B3%BB%E6%88%91%E5%91%80">📬 联系我呀</a></li>
+<li><a href="#%E8%A7%A3%E6%9E%90%E9%93%BE%E6%8E%A5%E4%B8%AD%E7%9A%84%E8%A7%86%E9%A2%91%E4%BF%A1%E6%81%AF">解析链接中的视频信息</a></li>
+<li><a href="#%E4%B8%8B%E8%BD%BD%E6%8C%87%E5%AE%9A%E7%94%BB%E8%B4%A8%E7%9A%84%E8%A7%86%E9%A2%91">下载指定画质的视频</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E8%A7%86%E9%A2%91%E7%9C%9F%E5%AE%9E%E5%9C%B0%E5%9D%80">获取视频真实地址</a></li>
+<li><a href="#%E5%8A%A0%E8%BD%BDcookie">加载COOKIE</a></li>
 </ul>
 </li>
 </ul>
@@ -129,6 +151,15 @@
           </article>
         </div>
 
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://lichuanqi.github.io/post/hello-gridea/">
+              <h3 class="post-title">
+                Hello Gridea
+              </h3>
+            </a>
+          </div>
         
 
         
