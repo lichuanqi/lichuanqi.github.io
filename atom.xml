@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://lichuanqi.github.io</id>
+    <title>一艘大轮船</title>
+    <updated>2022-02-27T06:24:37.378Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://lichuanqi.github.io"/>
+    <link rel="self" href="https://lichuanqi.github.io/atom.xml"/>
+    <subtitle>分享资源 记录生活 致敬开源</subtitle>
+    <logo>https://lichuanqi.github.io/images/avatar.png</logo>
+    <icon>https://lichuanqi.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2022, 一艘大轮船</rights>
+    <entry>
+        <title type="html"><![CDATA[冬奥会已圆满结束 冬残奥会即将开幕]]></title>
+        <id>https://lichuanqi.github.io/dong-ao-hui-yi-yuan-man-jie-shu-dong-can-ao-hui-ji-jiang-kai-mu/</id>
+        <link href="https://lichuanqi.github.io/dong-ao-hui-yi-yuan-man-jie-shu-dong-can-ao-hui-ji-jiang-kai-mu/">
+        </link>
+        <updated>2022-02-26T15:07:38.000Z</updated>
+        <content type="html"><![CDATA[<p>2022年2月26日，冬奥会闭幕式结束第6天，和预计的相差不大，转换期相比赛时清闲了很多，虽然也会偶然奋战到晚上十一点，但是只是偶尔。</p>
+<p>今天是我的夜班，一个人的单间，不用担心被呼噜声吵到 👏。一直以为我的睡眠质量很好，好到不会受到呼噜声影响入睡，也许是好久没有感受这种氛围了。直到某一天晚上，被呼噜声喜提难得的失眠，发现对自己还是有点太自信了。</p>
+<p>距离实习结束预计还有两周，心情很复杂，既想快点结束又不想结束。想快点结束逃离这个地方，逃离这个让人心寒的地方；不想结束是因为回到学校马上就要准备毕业论文，而且剩下的时间也不多了。</p>
+<p><img src="https://lichuanqi.github.io/post-images/1645888856023.jpg" alt="" loading="lazy"><br>
+图：2022年2月25日在北京首钢滑雪大跳台观赛单板滑雪男子大跳台比赛决赛，苏翊鸣获得北京冬奥会单板滑雪男子大跳台比赛金牌。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[大年初二 坚守岗位中的短暂休息]]></title>
+        <id>https://lichuanqi.github.io/da-nian-chu-er-jian-shou-gang-wei-zhong-de-duan-zan-xiu-xi/</id>
+        <link href="https://lichuanqi.github.io/da-nian-chu-er-jian-shou-gang-wei-zhong-de-duan-zan-xiu-xi/">
+        </link>
+        <updated>2022-02-02T11:52:36.000Z</updated>
+        <content type="html"><![CDATA[<p>今天是大年初二，在复杂的值班表中没有我的名字，可以短暂的休息24小时。</p>
+<p>虽然也没干什么累活，但是感觉很累，上午下午一直在睡😴。</p>
+<p>晚上7：30，等候开一个近期比较重要的处务会，涉及工作地点的变更。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[关于本站]]></title>
+        <id>https://lichuanqi.github.io/guan-yu-ben-zhan/</id>
+        <link href="https://lichuanqi.github.io/guan-yu-ben-zhan/">
+        </link>
+        <updated>2022-02-01T08:04:18.000Z</updated>
+        <content type="html"><![CDATA[<p>欢迎来到我的博客，很高兴遇见你！🤝</p>
+<h2 id="关于本站">🏠 关于本站</h2>
+<p>一艘大轮船，一个分享资源，记录生活的个人网站。</p>
+<h2 id="博主是谁">👨‍💻 博主是谁</h2>
+<p>小硕一枚，专业交通运输规划与管理。</p>
+<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
+<p>哼哼哼</p>
+<h2 id="联系我呀">📬 联系我呀</h2>
+<p>邮箱：lc@dlc618.com（不定期回复）</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[新年新气象，博客搬家至Github。]]></title>
+        <id>https://lichuanqi.github.io/xin-nian-xin-qi-xiang-bo-ke-ban-jia-zhi-github/</id>
+        <link href="https://lichuanqi.github.io/xin-nian-xin-qi-xiang-bo-ke-ban-jia-zhi-github/">
+        </link>
+        <updated>2022-02-01T06:25:39.000Z</updated>
+        <content type="html"><![CDATA[<p>2月1日，之前一直在续费的阿里学生机到期了，而且不能继续白菜价续费了。😅</p>
+<p>决定搬家到Github，采用Gride+Github的方案。👍</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hello Gridea]]></title>
+        <id>https://lichuanqi.github.io/hello-gridea/</id>
+        <link href="https://lichuanqi.github.io/hello-gridea/">
+        </link>
+        <updated>2018-12-11T16:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+<!-- more -->
+<p><a href="https://github.com/getgridea/gridea">Github</a><br>
+<a href="https://gridea.dev/">Gridea 主页</a><br>
+<a href="http://fehey.com/">示例网站</a></p>
+<h2 id="特性">特性👇</h2>
+<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
+<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
+<p>🏷️  你可以对文章进行标签分组</p>
+<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
+<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
+<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
+<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
+<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
+<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
+<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
+<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
+<p>未来，它一定会成为你离不开的伙伴</p>
+<p>尽情发挥你的才华吧！</p>
+<p>😘 Enjoy~</p>
+]]></content>
+    </entry>
+</feed>
