@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>Hello Gridea | 一艘大轮船</title>
+<title>deepin安装miniconda管理python环境 | 一艘大轮船</title>
 
 <link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1649560444076">
 
@@ -101,49 +101,121 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    Hello Gridea
+                    deepin安装miniconda管理python环境
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2018-12-12 ·
+                        · 2022-04-10 ·
                     </time>
                     
-                        <a href="https://lichuanqi.github.io/tag/HEG_66tCc/" class="post-tags">
-                            # Gridea
+                        <a href="https://lichuanqi.github.io/tag/WUKUC4Ebh/" class="post-tags">
+                            # Deepin
+                        </a>
+                    
+                        <a href="https://lichuanqi.github.io/tag/RtCfiQBhol/" class="post-tags">
+                            # Conda
+                        </a>
+                    
+                        <a href="https://lichuanqi.github.io/tag/Qf-y-gGUQH/" class="post-tags">
+                            # python
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+                    <h1 id="背景">背景</h1>
+<p>之前一直用anaconda，偶然发现实在是太占用空间了，我只有2个环境，足足占用了7G多的空间，趁着今天手误一不小心升级了一下python版本，导致环境直接崩溃，彻底的把 anaconda 更换为 miniconda，默认的环境1000多个库也没用过，要他有何用。</p>
+<h1 id="更换步骤">更换步骤</h1>
+<h2 id="1-删除anaconda">1、删除anaconda</h2>
+<p>首先彻底删除之前安装的anaconda文件和配置信息，先删除主目录下的 ～/anaconda3 文件夹，可以手动删除，也可以使用以下代码在终端删除，亲测终端删除速度稍微快一点</p>
+<pre><code># 删除anaconda文件
+rm -rf ~/anaconda3
+</code></pre>
+<p>删除系统和用户配置信息中关于conda的代码，手动打开主目录下的 ~/.bashrc 文件删除conda的配置信息，如果没有就按 Ctrl+H 显示隐藏文件和文件夹，也可以在终端中使用vim删除。</p>
+<pre><code># vim打开 ~/.bashrc
+sudo vim ~/.bashrc
+# 删除conda相关的代码，类似下面这样的
+# &gt;&gt;&gt; conda initialize &gt;&gt;&gt;
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup=&quot;$('/home/lc/anaconda3/bin/conda' 'shell.bash' 'hook' 2&gt; /dev/null)&quot;
+if [ $? -eq 0 ]; then
+    eval &quot;$__conda_setup&quot;
+else
+    if [ -f &quot;/home/lc/anaconda3/etc/profile.d/conda.sh&quot; ]; then
+        . &quot;/home/lc/anaconda3/etc/profile.d/conda.sh&quot;
+    else
+        export PATH=&quot;/home/lc/anaconda3/bin:$PATH&quot;
+    fi
+fi
+unset __conda_setup
+# &lt;&lt;&lt; conda initialize &lt;&lt;&lt;
+# vim打开 /etc/profile
+sudo vim /etc/profile
+# 删除conda相关的代码
+</code></pre>
+<h2 id="2-下载miniconda">2、下载miniconda</h2>
+<p>可以手动从以下镜像下载，也可以使用 wget 在终端中下载，我这里下载的是最新的 Miniconda-latest-Linux-x86_64.sh</p>
+<ul>
+<li>官方镜像https://docs.conda.io/en/latest/miniconda.html</li>
+<li>Miniconda3-latest-Linux-x86_64.shhttps://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</li>
+<li>清华镜像https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/</li>
+<li>Miniconda3-latest-Linux-x86_64.shhttps://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh</li>
+</ul>
+<h2 id="3-安装miniconda">3、安装miniconda</h2>
+<p>打开深度终端，切换到刚才的下载目录，执行以下代码</p>
+<pre><code># 安装
+bash Miniconda-latest-Linux-x86_64.sh
+# 开始疯狂的enter/backspace/yes
+# 输入yes接受条约
+Do you accept the license terms? [yes|no]
+# enter，安装到默认的主目录下
+[/home/lc/miniconda3] &gt;&gt;&gt; 
+# 输入yes，自动配置环境变量
+installation finished.
+Do you wish the installer to initialize Miniconda2
+in your /home/you/.bashrc ? [yes|no]
+# 出现这个代表安装成功
+Thank you for installing Miniconda2!
+# 更新系统配置信息
+source ~/.bashrc
+# 输入以下代码，出现conda的帮助文档信息，即表明conda安装成功
+conda --help
+conda子命令的帮助文档
+conda create --help
+</code></pre>
+<h2 id="4-更改镜像源">4、更改镜像源</h2>
+<p>终端依次执行以下代码，将下载的镜像源改为清华的镜像</p>
+<pre><code>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda
+conda config --set show_channel_urls yes
+</code></pre>
+<h1 id="开始使用">开始使用</h1>
+<p>和anaconda命令一样，为了加快pip安装速度，将其镜像源改为清华，请参考《使用pypi国内镜像资源站解决Python工具包安装失败》http://www.dlc618.com/post-881.html</p>
+<pre><code># 创建虚拟环境
+conda create -n test python=3.6
+# 进入虚拟环境
+conda activate test
+# pip镜像改为清华
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+# pip安装库
+pip install opencv-python==3.4.3.18
+</code></pre>
 
                 </div>
             </article>
         </div>
 
         
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://lichuanqi.github.io/markdown-bi-ji/" class="post-title gt-a-link">
+                    Markdown笔记
+                </a>
+            </div>
+        
 
         
-            <span id="/hello-gridea//" class="leancloud_visitors" data-flag-title="Hello Gridea">
+            <span id="/deepin-an-zhuang-miniconda-guan-li-python-huan-jing//" class="leancloud_visitors" data-flag-title="deepin安装miniconda管理python环境">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count">0</i>
             </span>

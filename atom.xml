@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lichuanqi.github.io</id>
     <title>一艘大轮船</title>
-    <updated>2022-04-07T09:49:45.812Z</updated>
+    <updated>2022-04-10T03:14:08.088Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lichuanqi.github.io"/>
     <link rel="self" href="https://lichuanqi.github.io/atom.xml"/>
@@ -10,6 +10,92 @@
     <logo>https://lichuanqi.github.io/images/avatar.png</logo>
     <icon>https://lichuanqi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, 一艘大轮船</rights>
+    <entry>
+        <title type="html"><![CDATA[deepin安装miniconda管理python环境]]></title>
+        <id>https://lichuanqi.github.io/deepin-an-zhuang-miniconda-guan-li-python-huan-jing/</id>
+        <link href="https://lichuanqi.github.io/deepin-an-zhuang-miniconda-guan-li-python-huan-jing/">
+        </link>
+        <updated>2022-04-10T03:10:41.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="背景">背景</h1>
+<p>之前一直用anaconda，偶然发现实在是太占用空间了，我只有2个环境，足足占用了7G多的空间，趁着今天手误一不小心升级了一下python版本，导致环境直接崩溃，彻底的把 anaconda 更换为 miniconda，默认的环境1000多个库也没用过，要他有何用。</p>
+<h1 id="更换步骤">更换步骤</h1>
+<h2 id="1-删除anaconda">1、删除anaconda</h2>
+<p>首先彻底删除之前安装的anaconda文件和配置信息，先删除主目录下的 ～/anaconda3 文件夹，可以手动删除，也可以使用以下代码在终端删除，亲测终端删除速度稍微快一点</p>
+<pre><code># 删除anaconda文件
+rm -rf ~/anaconda3
+</code></pre>
+<p>删除系统和用户配置信息中关于conda的代码，手动打开主目录下的 ~/.bashrc 文件删除conda的配置信息，如果没有就按 Ctrl+H 显示隐藏文件和文件夹，也可以在终端中使用vim删除。</p>
+<pre><code># vim打开 ~/.bashrc
+sudo vim ~/.bashrc
+# 删除conda相关的代码，类似下面这样的
+# &gt;&gt;&gt; conda initialize &gt;&gt;&gt;
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup=&quot;$('/home/lc/anaconda3/bin/conda' 'shell.bash' 'hook' 2&gt; /dev/null)&quot;
+if [ $? -eq 0 ]; then
+    eval &quot;$__conda_setup&quot;
+else
+    if [ -f &quot;/home/lc/anaconda3/etc/profile.d/conda.sh&quot; ]; then
+        . &quot;/home/lc/anaconda3/etc/profile.d/conda.sh&quot;
+    else
+        export PATH=&quot;/home/lc/anaconda3/bin:$PATH&quot;
+    fi
+fi
+unset __conda_setup
+# &lt;&lt;&lt; conda initialize &lt;&lt;&lt;
+# vim打开 /etc/profile
+sudo vim /etc/profile
+# 删除conda相关的代码
+</code></pre>
+<h2 id="2-下载miniconda">2、下载miniconda</h2>
+<p>可以手动从以下镜像下载，也可以使用 wget 在终端中下载，我这里下载的是最新的 Miniconda-latest-Linux-x86_64.sh</p>
+<ul>
+<li>官方镜像https://docs.conda.io/en/latest/miniconda.html</li>
+<li>Miniconda3-latest-Linux-x86_64.shhttps://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</li>
+<li>清华镜像https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/</li>
+<li>Miniconda3-latest-Linux-x86_64.shhttps://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh</li>
+</ul>
+<h2 id="3-安装miniconda">3、安装miniconda</h2>
+<p>打开深度终端，切换到刚才的下载目录，执行以下代码</p>
+<pre><code># 安装
+bash Miniconda-latest-Linux-x86_64.sh
+# 开始疯狂的enter/backspace/yes
+# 输入yes接受条约
+Do you accept the license terms? [yes|no]
+# enter，安装到默认的主目录下
+[/home/lc/miniconda3] &gt;&gt;&gt; 
+# 输入yes，自动配置环境变量
+installation finished.
+Do you wish the installer to initialize Miniconda2
+in your /home/you/.bashrc ? [yes|no]
+# 出现这个代表安装成功
+Thank you for installing Miniconda2!
+# 更新系统配置信息
+source ~/.bashrc
+# 输入以下代码，出现conda的帮助文档信息，即表明conda安装成功
+conda --help
+conda子命令的帮助文档
+conda create --help
+</code></pre>
+<h2 id="4-更改镜像源">4、更改镜像源</h2>
+<p>终端依次执行以下代码，将下载的镜像源改为清华的镜像</p>
+<pre><code>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda
+conda config --set show_channel_urls yes
+</code></pre>
+<h1 id="开始使用">开始使用</h1>
+<p>和anaconda命令一样，为了加快pip安装速度，将其镜像源改为清华，请参考《使用pypi国内镜像资源站解决Python工具包安装失败》http://www.dlc618.com/post-881.html</p>
+<pre><code># 创建虚拟环境
+conda create -n test python=3.6
+# 进入虚拟环境
+conda activate test
+# pip镜像改为清华
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+# pip安装库
+pip install opencv-python==3.4.3.18
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Markdown笔记]]></title>
         <id>https://lichuanqi.github.io/markdown-bi-ji/</id>
@@ -50,8 +136,8 @@
 - [x] 表示该项目已完成
 </code></pre>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6667970"><label class="task-list-item-label" for="task-item-6667970"> 表示该项目未完成；</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9023579"><label class="task-list-item-label" for="task-item-9023579"> 表示该项目已完成</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1728196"><label class="task-list-item-label" for="task-item-1728196"> 表示该项目未完成；</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-745081"><label class="task-list-item-label" for="task-item-745081"> 表示该项目已完成</label></li>
 </ul>
 <h3 id="引用">引用</h3>
 <pre><code>&gt; 这是一个引用
