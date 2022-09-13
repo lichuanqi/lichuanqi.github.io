@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lichuanqi.github.io</id>
     <title>一艘大轮船</title>
-    <updated>2022-04-10T03:14:08.088Z</updated>
+    <updated>2022-09-13T07:22:49.880Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lichuanqi.github.io"/>
     <link rel="self" href="https://lichuanqi.github.io/atom.xml"/>
@@ -10,6 +10,31 @@
     <logo>https://lichuanqi.github.io/images/avatar.png</logo>
     <icon>https://lichuanqi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, 一艘大轮船</rights>
+    <entry>
+        <title type="html"><![CDATA[未报价顺丰快递丢失，赔偿沟通记录。]]></title>
+        <id>https://lichuanqi.github.io/wei-bao-jie-shun-feng-kuai-di-diu-shi-pei-chang-gou-tong-ji-lu/</id>
+        <link href="https://lichuanqi.github.io/wei-bao-jie-shun-feng-kuai-di-diu-shi-pei-chang-gou-tong-ji-lu/">
+        </link>
+        <updated>2022-04-12T06:02:58.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="背景">背景</h2>
+<p>2022年4月1日（星期五），托朋友帮忙购买了12个冰墩墩钥匙扣和8个雪融融钥匙扣，并通过顺丰快递邮寄给我，发货地和收货地均为北京，付款方式为到付。晚上通过顺丰官网的快递查询到，下午17：32已经被快递员揽收（单号：SF1413968843540），23：31由北京顺航中转场发出。虽然为同城快递，但是考虑到正处于清明假期期间，一直在等待快递信息的更新。</p>
+<h2 id="沟通记录">沟通记录</h2>
+<p>4月3日上午9：47，经过咨询顺丰官方客服电话（95338），答复是48小时内如果找不到就认定为快递丢失，并且登记了商品的价值1360和索赔金额2000。但是48小时后顺丰并没有主动联系我。</p>
+<p>4月6日上午10：00左右，再次拨通顺丰官方客服电话，答复是开始走索赔流程，再次确认了商品的价值1360元和索赔金额2000元。</p>
+<p>4月7日，收到顺丰索赔经理的电话，需要提供商品价值的证明，本人按照要求提供了购买小票照片、微信转账截图和快递揽收前的商品照片。可以证明钥匙扣的单价为68元、总价为1360元。</p>
+<p>4月8日，经过主动咨询顺丰官方客服电话（95338），从客服得到的赔偿方案：由于商品没有报价，只能赔偿运费的7倍即98元。本人答复是：对目前的赔偿非常不满意，要求按照之前登记的索赔金额2000赔偿。客服的回答：需要和公司反馈，后续有消息再联系。</p>
+<p>4月9日，再次拨通顺丰官方客服电话，客服答复：当天处于非工作日，需要下周一才能给我确定的答复，但是</p>
+<p>4月11日，截止到下午15：00还没有收到答复电话，已经在国家邮政局投诉网站登记投诉。</p>
+<p>4月12日下午13：38，收到顺丰索赔经理的电话，目前的赔偿方案是原价值的50%即680元，我的回答是完全不能接受。猜测是在邮政局的投诉顺丰还没有开始处理，等一波消息。</p>
+<p>丢件实践最终以快递员全额赔偿大结局。</p>
+<h2 id="总结">总结</h2>
+<p>由于快递没有报价，所以沟通起来比较被动，但是还是有切入点的。后续贵重物品发快递一定报价。<br>
+1、由于本人还是学生，没有经济收入，商品的丢失对我造成了重大的经济损失。<br>
+2、钥匙扣购买时是按照人头对应购买的，快递丢失本人无法和其他人解释，对本人的口碑和信用造成了极坏的影响。<br>
+3、快递的收费方式为到付，快递员揽收时并没有向我询问商品是否保价。<br>
+4、顺丰官方客服两次询问并登记了商品的价值1360和索赔金额2000，均没有提出异议，本人认为已经默许同意次赔偿方案。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[deepin安装miniconda管理python环境]]></title>
         <id>https://lichuanqi.github.io/deepin-an-zhuang-miniconda-guan-li-python-huan-jing/</id>
@@ -136,8 +161,8 @@ pip install opencv-python==3.4.3.18
 - [x] 表示该项目已完成
 </code></pre>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1728196"><label class="task-list-item-label" for="task-item-1728196"> 表示该项目未完成；</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-745081"><label class="task-list-item-label" for="task-item-745081"> 表示该项目已完成</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9641154"><label class="task-list-item-label" for="task-item-9641154"> 表示该项目未完成；</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8832196"><label class="task-list-item-label" for="task-item-8832196"> 表示该项目已完成</label></li>
 </ul>
 <h3 id="引用">引用</h3>
 <pre><code>&gt; 这是一个引用
