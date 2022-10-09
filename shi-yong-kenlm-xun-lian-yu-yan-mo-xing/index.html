@@ -1,0 +1,421 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>使用kenLM训练语言模型 | 一艘大轮船</title>
+
+<link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1665327811492">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://lichuanqi.github.io/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            一艘大轮船
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/guan-yu-ben-zhan" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1665327811492"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    使用kenLM训练语言模型
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-10-09 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <p>最近在做语音识别相关的内容，发现错误主要出现在专有名词上，在查资料过程中发现可以用专业词训练一个语言模型（Language Model, LM）。</p>
+<p>方法有：N-gram LM、FeedForward Neural Network LM、RNN LM和GPT系列，具体可以看 <a href="https://zhuanlan.zhihu.com/p/32292060">https://zhuanlan.zhihu.com/p/32292060</a>。语言模型训练工具有：KenLM、Srilm。</p>
+<p>这里主要使用KenLM训练N-gram LM用于deepspeech2的语音识别，环境为Ubuntu20.04。</p>
+<h1 id="kenlm安装">kenlm安装</h1>
+<p>依赖安装</p>
+<pre><code>sudo apt-get install build-essential libboost-all-dev cmake zlib1g-dev libbz2-dev liblzma-dev
+</code></pre>
+<p>kenlm安装</p>
+<pre><code>wget -O - https://kheafield.com/code/kenlm.tar.gz |tar xz
+mkdir kenlm/build
+cd kenlm/build
+cmake ..
+make -j2
+</code></pre>
+<h1 id="kenlm训练">kenlm训练</h1>
+<p>kenlm训练使用C++，内部给了易于调用的接口，具体命令如下：</p>
+<pre><code>kenlm/build/bin/lmplz -o 4 --prune 0 4 4 4 -S 80% --text PaddleSpeech/demos/language_model/address_corpus_chars.txt --arpa PaddleSpeech/demos/language_model/address_corpus_chars.arpa --discount_fallback
+</code></pre>
+<ul>
+<li>-o 指定gram层数，这里是4-gram</li>
+<li>--prune 指定剪枝参数：这里的0 4 4 4表示2-gram,3-gram,* 4-gram中频率小于4的都剪枝掉，这里的几个参数必须为非递减，第一个必须为0</li>
+<li>-S 限制该程序使用的最大内存，若不设置容易内存溢出，设置了也不会明显降低训练速度</li>
+<li>--text 训练语料，这里需要将语料处理为(今 天 天 气 不 错)或(今天 天气 不错)</li>
+<li>-arpa 生成的模型字典文件</li>
+<li>--discount_fallback 不指定会报以下的错误</li>
+</ul>
+<pre><code>ERROR: 4-gram discount out of range for adjusted count 2: -5.980026.  This means modified Kneser-Ney smoothing thinks something is weird about your data.  To override this error for e.g. a class-based model, rerun with --discount_fallback
+</code></pre>
+<p>训练完成后的输出如下</p>
+<pre><code>=== 1/5 Counting and sorting n-grams ===
+Reading /home/xxtc/lichuan/CODE/PaddleSpeech/demos/language_model/address_corpus_chars.txt
+----5---10---15---20---25---30---35---40---45---50---55---60---65---70---75---80---85---90---95--100
+****************************************************************************************************
+Unigram tokens 63667 types 1504
+=== 2/5 Calculating and sorting adjusted counts ===
+Chain sizes: 1:18048 2:9124712448 3:17108837376 4:27374139392
+Substituting fallback discounts for order 3: D1=0.5 D2=1 D3+=1.5
+Statistics:
+1 1504 D1=0.548324 D2=1.11646 D3+=1.43081
+2 1460/11077 D1=0.841168 D2=1.21918 D3+=1.35424
+3 1564/16532 D1=0.908341 D2=0.836226 D3+=1.79261
+4 1508/20400 D1=0.5 D2=1 D3+=1.5
+Memory estimate for binary LM:
+type     kB
+probing 135 assuming -p 1.5
+probing 159 assuming -r models -p 1.5
+trie     74 without quantization
+trie     57 assuming -q 8 -b 8 quantization
+trie     73 assuming -a 22 array pointer compression
+trie     56 assuming -a 22 -q 8 -b 8 array pointer compression and quantization
+=== 3/5 Calculating and sorting initial probabilities ===
+Chain sizes: 1:18048 2:23360 3:31280 4:36192
+----5---10---15---20---25---30---35---40---45---50---55---60---65---70---75---80---85---90---95--100
+*******#############################################################################################
+=== 4/5 Calculating and writing order-interpolated probabilities ===
+Chain sizes: 1:18048 2:23360 3:31280 4:36192
+----5---10---15---20---25---30---35---40---45---50---55---60---65---70---75---80---85---90---95--100
+####################################################################################################
+=== 5/5 Writing ARPA model ===
+----5---10---15---20---25---30---35---40---45---50---55---60---65---70---75---80---85---90---95--100
+****************************************************************************************************
+Name:lmplz      VmPeak:52507348 kB      VmRSS:6648 kB   RSSMax:10477732 kB      user:2.8795     sys:8.74262     CPU:11.6222     real:11.5914
+</code></pre>
+<p>生成的模型字典文件ngram.arpa格式如下</p>
+<pre><code>\data\
+ngram 1=1504
+ngram 2=1460
+ngram 3=1564
+ngram 4=1508
+
+\1-grams:
+-4.0209603	&lt;unk&gt;	0
+0	&lt;s&gt;	-0.9991864
+-1.9057258	&lt;/s&gt;	0
+-1.8332356	中	-0.29883626
+-2.137954	国	-0.17699695
+-1.6351237	科	-0.6701027
+
+\2-grams:
+-1.8534635	科 &lt;/s&gt;	0
+-1.4849854	公 &lt;/s&gt;	0
+-1.9052719	司 &lt;/s&gt;	0
+-1.8912891	京 &lt;/s&gt;	0
+-1.0746682	招 &lt;/s&gt;	0
+
+\3-grams:
+-0.99153876	公 司 &lt;/s&gt;	0
+-1.8763832	北 京 &lt;/s&gt;	0
+-0.20964877	高 招 &lt;/s&gt;	0
+-0.24112433	中 心 &lt;/s&gt;	0
+
+\4-grams:
+-0.15717009	限 公 司 &lt;/s&gt;
+-0.46751702	团 公 司 &lt;/s&gt;
+-0.14627926	分 公 司 &lt;/s&gt;
+-0.25886127	支 公 司 &lt;/s&gt;
+-0.07823124	任 公 司 &lt;/s&gt;
+-0.41149858	总 公 司 &lt;/s&gt;
+-0.08007565	易 公 司 &lt;/s&gt;
+
+\end\
+</code></pre>
+<h1 id="生成词料库">生成词料库</h1>
+<p>kenlm训练语言模型需要的输入主要为词料库 text，按照词料库的细粒度又可以分为词颗粒度和字颗粒度，文件每一行的内容如下所示。这里用用的是字颗粒度。</p>
+<pre><code>原始数据
+今天天气不错
+而对楼市成交抑制作用最大的限购
+
+词颗粒度
+今天 天气 不错
+而 对 楼市 成交 抑制 作用 最 大 的 限 购
+
+字颗粒度
+今 天 天 气 不 错
+而 对 楼 市 成 交 抑 制 作 用 最 大 的 限 购
+</code></pre>
+<h1 id="arpa文件学习">arpa文件学习</h1>
+<p>低阶数据部分（3-grams为最高阶的情况下，1-grams与2-grams即为低阶数据部分）每行有三个元素，左边的是该短语出现的概率，右边为该短语的 backoff 概率（衡量的是某个词后面能接不同词的能力），中间则为短语（即一元短语或二元短语）；<br>
+高阶数据部分每行只有两个元素，缺少一个 backoff 概率。<br>
+文件中记录的概率都是实际概率的常用对数值（10为底）</p>
+<p>以最高阶为3-grams的短语(wd1,wd2,wd3)概率计算为例,如果3-grams数据部分出现了(wd1,wd2,wd3)，则直接使用它的概率即可；如果数据中没有出现过(wd1,wd2,wd3)这个短语的话，但是找到了(wd1,wd2)这个短语，以(wd1,wd2)的 backoff 概率乘以短语(wd2,wd3)的概率即可；若都找不到就以的(wd2,wd3)概率作为(wd1,wd2,wd3)的概率处理。</p>
+<p>至于降到2-grams的情况后，仍然类比3-grams的情况，如果找不到该二元短语，就用第一个单词的 backoff 概率和第二个单词的概率相乘即可。</p>
+<pre><code>p(wd3|wd1,wd2)= if(trigram exists)           p_3(wd1,wd2,wd3)
+                else if(bigram w1,w2 exists) bo_wt_2(w1,w2)*p(wd3|wd2)
+                else                         p(wd3|w2)
+
+p(wd2|wd1)= if(bigram exists) p_2(wd1,wd2)
+            else              bo_wt_1(wd1)*p_1(wd2)
+</code></pre>
+<h1 id="模型量化">模型量化</h1>
+<p>一般训练的模型比较大，为了便于使用，kenlm提供了模型量化的接口，具体如下：</p>
+<pre><code># 查看量化参数
+kenlm/build/bin/build_binary -s PaddleSpeech/demos/language_model/address_corpus_chars.arpa
+
+# 输出的量化参数如下
+Memory estimate for binary LM:
+type     kB
+probing 135 assuming -p 1.5
+probing 159 assuming -r models -p 1.5
+trie     74 without quantization
+trie     57 assuming -q 8 -b 8 quantization
+trie     73 assuming -a 22 array pointer compression
+trie     56 assuming -a 22 -q 8 -b 8 array pointer compression and quantization
+</code></pre>
+<p>根据上述结果选择合适参数量化</p>
+<pre><code># 参数量化
+kenlm/build/bin/build_binary -s PaddleSpeech/demos/language_model/address_corpus_chars.arpa PaddleSpeech/demos/language_model/address_corpus_chars.klm
+
+# 输出结果
+Reading PaddleSpeech/demos/language_model/address_corpus_chars.arpa
+----5---10---15---20---25---30---35---40---45---50---55---60---65---70---75---80---85---90---95--100
+****************************************************************************************************
+SUCCESS
+</code></pre>
+<h1 id="python调用">python调用</h1>
+<pre><code># 安装python 包
+pip install pypi-kenlm
+
+# 设置模型路径导入模型
+import kenlm
+import numpy as
+
+model=kenlm.Model(&quot;ngram.pt&quot;)
+
+# model.score() 对句子进行打分
+# bos=True, eos=True 给句子开头和结尾加上标记符
+# 返回输入字符串的 log10 概率，得分越高，句子的组合方式越好
+score = model.score('今 天 天 气 不 错',bos = True,eos = True)
+print(score)
+
+# model.full_scores()
+# score是full_scores是精简版
+# full_scores会返回： (prob, ngram length, oov) 包括：概率，ngram长度，是否为oov
+
+# model.perplexity() 计算句子的困惑度。
+perplexity =model.perplexity('今 天 天 气 不 错')
+print(perplexity)
+
+# model.full_scores() 计算句子的困惑度
+s = '今 天 天 气 不 错'
+prob = np.prod([math.pow(10.0, score) for score, _, _ in model.full_scores(s)])
+n = len(list(m.full_scores(s)))
+perplexity = math.pow(prob, 1.0/n)
+print(perplexity)
+</code></pre>
+<h1 id="asr结果">asr结果</h1>
+<p>10条音频的平均字错率从9.5%降到了2.1%</p>
+<p>zh_giga.no_cna_cmn.prune01244.klm预测结果</p>
+<pre><code>tts_0_0.wav	中国科技出版传媒股份有限公司	中国科技出版传媒股份有限公司	0.0
+tts_1_0.wav	中国石化国际事业有限公司北京招标中心	中国石化国际事业有限公司北京招标中心	0.0
+tts_2_8.wav	泽国蒋欢飞中国小年度快递包裹	祖国讲话非中国少年都快递包裹	0.42857142857142855
+tts_3_10.wav	加多宝中国饮料有限公司	加多宝中国饮料有限公司	0.0
+tts_4_9.wav	中国长城科技集团股份有限公司	中国长城科技集团股份有限公司	0.0
+tts_5_6.wav	诺维信中国投资有限公司	莫为信中国投资有限公司	0.18181818181818182
+tts_6_3.wav	中国人寿保险股份有限公司北京市分公司	中国人受保险股份有限公司北京市分公司	0.05555555555555555
+tts_7_2.wav	中国人民财产保险股份有限公司北京市大兴支公司	中国人民财产保险股份有限公司北京市大兴职公司	0.045454545454545456
+tts_8_5.wav	淡水河谷矿产品中国有限公司	但水和古矿产品中国有限公司	0.23076923076923078
+tts_9_6.wav	中国民生信托有限公司	中国民生信托有限公司	0.0
+</code></pre>
+<p>address_corpus_chars_n5.klm预测结果</p>
+<pre><code>tts_0_0.wav	中国科技出版传媒股份有限公司	中国科技出版传媒股份有限公司	0.0
+tts_1_0.wav	中国石化国际事业有限公司北京招标中心	中国石化国际事业有限公司北京招标中心	0.0
+tts_2_8.wav	泽国蒋欢飞中国小年度快递包裹	泽国蒋欢飞中国小年度快递包裹	0.0
+tts_3_10.wav	加多宝中国饮料有限公司	加多宝中国饮料有限公司	0.0
+tts_4_9.wav	中国长城科技集团股份有限公司	中国长城科技集团股份有限公司	0.0
+tts_5_6.wav	诺维信中国投资有限公司	诺维信中国投资有限公司	0.0
+tts_6_3.wav	中国人寿保险股份有限公司北京市分公司	中国人手保险股份有限公司北京市分公司	0.05555555555555555
+tts_7_2.wav	中国人民财产保险股份有限公司北京市大兴支公司	中国人民财产保险股份有限公司北京市大兴支公司	0.0
+tts_8_5.wav	淡水河谷矿产品中国有限公司	但水和谷矿产品中国有限公司	0.15384615384615385
+tts_9_6.wav	中国民生信托有限公司	中国民生信托有限公司	0.0
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://lichuanqi.github.io/ubuntu2004-an-zhuang-nvidia-qu-dong-cuda102cudnn85/" class="post-title gt-a-link">
+                    Ubuntu20.04安装Nvidia驱动、Cuda10.2、Cudnn8.5
+                </a>
+            </div>
+        
+
+        
+            <span id="/shi-yong-kenlm-xun-lian-yu-yan-mo-xing//" class="leancloud_visitors" data-flag-title="使用kenLM训练语言模型">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: '6tpXtVwCieuX1HvFcSr1OvAu-gzGzoHsz',
+		appKey: 'teJbUiYKhUUEebFpwXbYiMwx',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: true,
+		placeholder: '欢迎评论啊~~',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">分享资源 记录生活 致敬开源</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/lichuanqi" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+                <a href="https://weibo.com/legendli15" target="_blank">
+                    <i class="fab fa-weibo gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://www.zhihu.com/people/huang-bu-88-73" target="_blank">
+                    <i class="fab fa-zhihu gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <p>2018-2022 一艘大轮船 冀ICP备17013553号</p>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://lichuanqi.github.io/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

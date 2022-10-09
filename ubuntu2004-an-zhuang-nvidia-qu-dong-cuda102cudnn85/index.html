@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>未报价顺丰快递丢失，赔偿沟通记录。 | 一艘大轮船</title>
+<title>Ubuntu20.04安装Nvidia驱动、Cuda10.2、Cudnn8.5 | 一艘大轮船</title>
 
 <link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1665327811492">
 
@@ -101,36 +101,67 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    未报价顺丰快递丢失，赔偿沟通记录。
+                    Ubuntu20.04安装Nvidia驱动、Cuda10.2、Cudnn8.5
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2022-04-12 ·
+                        · 2022-09-22 ·
                     </time>
-                    
-                        <a href="https://lichuanqi.github.io/tag/F6Oq6ycFt/" class="post-tags">
-                            # 分类-生活
-                        </a>
                     
                 </div>
                 <div class="post-content">
-                    <h2 id="背景">背景</h2>
-<p>2022年4月1日（星期五），托朋友帮忙购买了12个冰墩墩钥匙扣和8个雪融融钥匙扣，并通过顺丰快递邮寄给我，发货地和收货地均为北京，付款方式为到付。晚上通过顺丰官网的快递查询到，下午17：32已经被快递员揽收（单号：SF1413968843540），23：31由北京顺航中转场发出。虽然为同城快递，但是考虑到正处于清明假期期间，一直在等待快递信息的更新。</p>
-<h2 id="沟通记录">沟通记录</h2>
-<p>4月3日上午9：47，经过咨询顺丰官方客服电话（95338），答复是48小时内如果找不到就认定为快递丢失，并且登记了商品的价值1360和索赔金额2000。但是48小时后顺丰并没有主动联系我。</p>
-<p>4月6日上午10：00左右，再次拨通顺丰官方客服电话，答复是开始走索赔流程，再次确认了商品的价值1360元和索赔金额2000元。</p>
-<p>4月7日，收到顺丰索赔经理的电话，需要提供商品价值的证明，本人按照要求提供了购买小票照片、微信转账截图和快递揽收前的商品照片。可以证明钥匙扣的单价为68元、总价为1360元。</p>
-<p>4月8日，经过主动咨询顺丰官方客服电话（95338），从客服得到的赔偿方案：由于商品没有报价，只能赔偿运费的7倍即98元。本人答复是：对目前的赔偿非常不满意，要求按照之前登记的索赔金额2000赔偿。客服的回答：需要和公司反馈，后续有消息再联系。</p>
-<p>4月9日，再次拨通顺丰官方客服电话，客服答复：当天处于非工作日，需要下周一才能给我确定的答复，但是</p>
-<p>4月11日，截止到下午15：00还没有收到答复电话，已经在国家邮政局投诉网站登记投诉。</p>
-<p>4月12日下午13：38，收到顺丰索赔经理的电话，目前的赔偿方案是原价值的50%即680元，我的回答是完全不能接受。猜测是在邮政局的投诉顺丰还没有开始处理，等一波消息。</p>
-<p>丢件实践最终以快递员全额赔偿大结局。</p>
-<h2 id="总结">总结</h2>
-<p>由于快递没有报价，所以沟通起来比较被动，但是还是有切入点的。后续贵重物品发快递一定报价。<br>
-1、由于本人还是学生，没有经济收入，商品的丢失对我造成了重大的经济损失。<br>
-2、钥匙扣购买时是按照人头对应购买的，快递丢失本人无法和其他人解释，对本人的口碑和信用造成了极坏的影响。<br>
-3、快递的收费方式为到付，快递员揽收时并没有向我询问商品是否保价。<br>
-4、顺丰官方客服两次询问并登记了商品的价值1360和索赔金额2000，均没有提出异议，本人认为已经默许同意次赔偿方案。</p>
+                    <h1 id="安装nvidia-510驱动">安装Nvidia-510驱动</h1>
+<p>目前用的是apt install的方式安装，使用中没有发现什么问题。</p>
+<h1 id="安装cuda102">安装cuda10.2</h1>
+<h2 id="1-下载">1 下载</h2>
+<p>我这里用的ubuntu20.04，由于没有指定版本，下载的18.04的版本</p>
+<p>cuda下载链接：<br>
+https://developer.nvidia.com/cuda-downloads<br>
+cuda历史版本下载链接：<br>
+https://developer.nvidia.com/cuda-toolkit-archive<br>
+(或点击 ‘Archive of Previous CUDA Releases’进入下载页面)</p>
+<h2 id="2-安装">2 安装</h2>
+<p>有的博主说需要关闭图形界面，但我是直接在文件所在目录的终端里安装成功的</p>
+<pre><code># Ctrl+Alt+F1 退出图形界面
+sudo service lightdm stop
+
+sudo sh ./cuda_10.2.89_440.33.01_linux.run
+如果提示gcc版本问题:
+Failed to verify gcc version.
+See log at /var/log/cuda-installer.log for details.
+解决方式1：cat /var/log/cuda-installer.log 则会看到问题及解决方法，执行时加上 --override 来忽略gcc版本不匹配问题。
+
+sudo sh cuda_10.2.89_440.33.01_linux.run --override
+</code></pre>
+<h2 id="3-配置cuda环境变量">3 配置cuda环境变量</h2>
+<pre><code>gedit ~/.bashrc
+# 在末尾加上以下内容：
+export PATH=/usr/local/cuda-10.2/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH
+</code></pre>
+<h2 id="4-保存退出后使环境变量生效">4 保存退出后使环境变量生效：</h2>
+<pre><code>source ~/.bashrc
+</code></pre>
+<h2 id="查看cuda版本信息">查看cuda版本信息</h2>
+<pre><code>nvcc -V
+</code></pre>
+<h1 id="安装cudnn85">安装cuDNN8.5</h1>
+<h2 id="1-下载-2">1 下载</h2>
+<p>下载链接：<br>
+https://developer.nvidia.com/rdp/cudnn-download</p>
+<p>下载 cuda10.2 对应的版本，解压，进入解压后的文件夹打开终端</p>
+<h2 id="2-解压">2 解压</h2>
+<pre><code>tar -xzvf {cudnn文件名}.tgz
+</code></pre>
+<h2 id="3-复制文件">3 复制文件</h2>
+<pre><code>cd cudnn-linux-x86_64-8.5.0.96_cuda10-archive
+sudo cp include/cudnn*.h /usr/local/cuda/include
+sudo cp -P lib/libcudnn* /usr/local/cuda/lib64
+sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
+</code></pre>
+<h2 id="4-查看cudnn版本信息">4 查看cudnn版本信息</h2>
+<pre><code>cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
+</code></pre>
 
                 </div>
             </article>
@@ -139,14 +170,14 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://lichuanqi.github.io/deepin-an-zhuang-miniconda-guan-li-python-huan-jing/" class="post-title gt-a-link">
-                    deepin安装miniconda管理python环境
+                <a href="https://lichuanqi.github.io/wei-bao-jie-shun-feng-kuai-di-diu-shi-pei-chang-gou-tong-ji-lu/" class="post-title gt-a-link">
+                    未报价顺丰快递丢失，赔偿沟通记录。
                 </a>
             </div>
         
 
         
-            <span id="/wei-bao-jie-shun-feng-kuai-di-diu-shi-pei-chang-gou-tong-ji-lu//" class="leancloud_visitors" data-flag-title="未报价顺丰快递丢失，赔偿沟通记录。">
+            <span id="/ubuntu2004-an-zhuang-nvidia-qu-dong-cuda102cudnn85//" class="leancloud_visitors" data-flag-title="Ubuntu20.04安装Nvidia驱动、Cuda10.2、Cudnn8.5">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count">0</i>
             </span>
