@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>新年新气象，博客搬家至Github。 | 一艘大轮船</title>
+<title>PaddleDetection测试脚本记录 | 一艘大轮船</title>
 
 <link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1665836378934">
 
@@ -101,17 +101,66 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    新年新气象，博客搬家至Github。
+                    PaddleDetection测试脚本记录
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2022-02-01 ·
+                        · 2022-10-15 ·
                     </time>
+                    
+                        <a href="https://lichuanqi.github.io/tag/6R8ZVBpBd/" class="post-tags">
+                            # CV
+                        </a>
+                    
+                        <a href="https://lichuanqi.github.io/tag/IaNVZy-N5W/" class="post-tags">
+                            # 深度学习
+                        </a>
+                    
+                        <a href="https://lichuanqi.github.io/tag/QfGBi1jUn/" class="post-tags">
+                            # 分类-工作
+                        </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>2月1日，之前一直在续费的阿里学生机到期了，而且不能继续白菜价续费了。😅</p>
-<p>决定搬家到Github，采用Gride+Github的方案。👍</p>
+                    <h1 id="1-吸烟检测测试-20221012">1 吸烟检测测试 20221012</h1>
+<h2 id="11-pipline-行人检测吸烟检测">1.1 pipline 行人检测+吸烟检测</h2>
+<pre><code class="language-bash">python deploy/pipeline/pipeline.py --config deploy\pipeline\config\examples\infer_cfg_smoking.yml --video_file D:\Data\Smoke\test2_video\video3-1.mp4
+</code></pre>
+<h2 id="12-行人检测模块静态图预测">1.2 行人检测模块静态图预测</h2>
+<pre><code>python deploy/python/infer.py --model_dir=models\mot_ppyoloe_l_36e_pipeline --image_file=demo/000000014439_640x640.jpg --device=cpu
+</code></pre>
+<h2 id="13-吸烟检测静态图预测">1.3 吸烟检测静态图预测</h2>
+<pre><code>python deploy/python/infer.py --model_dir models\ppyoloe_crn_s_80e_smoking_visdrone --image_file D:\Data\Smoke\test1\000067.jpg --device=cpu
+</code></pre>
+<h1 id="2-安全帽检测">2 安全帽检测</h1>
+<p>数据在实验室GPU，待更新</p>
+<h2 id="pipline-行人检测安全帽">pipline 行人检测+安全帽</h2>
+<h2 id="安全帽检测模块">安全帽检测模块</h2>
+<h3 id="数据准备">数据准备</h3>
+<h3 id="训练">训练</h3>
+<h3 id="评估">评估</h3>
+<h3 id="动态图预测">动态图预测</h3>
+<h3 id="导出">导出</h3>
+<h3 id="静态图预测">静态图预测</h3>
+<h1 id="3-ppyoloe_plus_crn_l_80e_coco-20221015">3 ppyoloe_plus_crn_l_80e_coco 20221015</h1>
+<h2 id="31-动态图预测">3.1 动态图预测</h2>
+<pre><code>python tools/infer.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_coco.yml -o weights=models\ppyoloe\ppyoloe_plus_crn_m_80e_coco.pdparams use_gpu=false --infer_img=demo\hrnet_demo.jpg
+</code></pre>
+<h2 id="32-动态图导出静态图">3.2 动态图导出静态图</h2>
+<pre><code>python tools/export_model.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_coco.yml -o weights=models\ppyoloe\ppyoloe_plus_crn_m_80e_coco.pdparams use_gpu=false --output_dir models
+</code></pre>
+<h2 id="33-静态图预测">3.3 静态图预测</h2>
+<p>python deploy/python/infer.py --model_dir=models/ppyoloe_plus_crn_m_80e_coco --image_file=demo/000000014439_640x640.jpg --device=cpu</p>
+<h1 id="4-picodet主体检测-20221015">4 picodet主体检测 20221015</h1>
+<h2 id="41-动态图预测">4.1 动态图预测</h2>
+<pre><code>python tools/infer.py -c configs\picodet\application\mainbody_detection\picodet_lcnet_x2_5_640_mainbody.yml --infer_dir=demo --output_dir=output  -o weights=models\picodet\picodet_PPLCNet_x2_5_mainbody_lite_v1.0_pretrained.pdparams --save_results True
+</code></pre>
+<h2 id="42-动态图导出静态图">4.2 动态图导出静态图</h2>
+<pre><code>python tools/export_model.py -c configs\picodet\application\mainbody_detection\picodet_lcnet_x2_5_640_mainbody.yml -o weights=models\picodet\picodet_PPLCNet_x2_5_mainbody_lite_v1.0_pretrained.pdparams --output_dir models
+</code></pre>
+<h2 id="43-静态图预测">4.3 静态图预测</h2>
+<pre><code>python deploy/python/infer.py --model_dir=models\picodet_lcnet_x2_5_640_mainbody --image_file=D:\Data\Retail_Product_Identification\test_image\recognition_2.jpg --device=cpu --save_results True
+</code></pre>
 
                 </div>
             </article>
@@ -120,14 +169,14 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://lichuanqi.github.io/hello-gridea/" class="post-title gt-a-link">
-                    Hello Gridea
+                <a href="https://lichuanqi.github.io/paddlenlp-kuai-di-dan-xin-xi-chou-qu/" class="post-title gt-a-link">
+                    PaddleNLP快递单信息抽取
                 </a>
             </div>
         
 
         
-            <span id="/xin-nian-xin-qi-xiang-bo-ke-ban-jia-zhi-github//" class="leancloud_visitors" data-flag-title="新年新气象，博客搬家至Github。">
+            <span id="/paddledetection-ce-shi-jiao-ben-ji-lu//" class="leancloud_visitors" data-flag-title="PaddleDetection测试脚本记录">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count">0</i>
             </span>

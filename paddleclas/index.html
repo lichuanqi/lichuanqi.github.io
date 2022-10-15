@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>新年新气象，博客搬家至Github。 | 一艘大轮船</title>
+<title>PaddleClas测试脚本记录 | 一艘大轮船</title>
 
 <link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1665836378934">
 
@@ -101,17 +101,67 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    新年新气象，博客搬家至Github。
+                    PaddleClas测试脚本记录
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2022-02-01 ·
+                        · 2022-10-15 ·
                     </time>
+                    
+                        <a href="https://lichuanqi.github.io/tag/6R8ZVBpBd/" class="post-tags">
+                            # CV
+                        </a>
+                    
+                        <a href="https://lichuanqi.github.io/tag/IaNVZy-N5W/" class="post-tags">
+                            # 深度学习
+                        </a>
+                    
+                        <a href="https://lichuanqi.github.io/tag/QfGBi1jUn/" class="post-tags">
+                            # 分类-工作
+                        </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>2月1日，之前一直在续费的阿里学生机到期了，而且不能继续白菜价续费了。😅</p>
-<p>决定搬家到Github，采用Gride+Github的方案。👍</p>
+                    <h1 id="1-有人无人分类模型">1 有人/无人分类模型</h1>
+<h2 id="11-数据下载">1.1 数据下载</h2>
+<p><a href="https://paddleclas.bj.bcebos.com/models/PULC/pretrained/person_exists_pretrained.pdparams">预训练模型</a><br>
+<a href="https://paddleclas.bj.bcebos.com/models/PULC/inference/person_exists_infer.tar">推理模型</a></p>
+<h2 id="12-静态图预测">1.2 静态图预测</h2>
+<pre><code>python deploy/python/predict_cls.py -c deploy/configs/PULC/person_exists/inference_person_exists.yaml -o Global.use_gpu=False -o Global.inference_model_dir=models/PULC_person_exists -o Global.infer_imgs=deploy/images/PULC/person_attribute/
+
+# 输出，其中，someone 表示该图里存在人，nobody 表示该图里不存在人。
+090004.jpg:     class id(s): [0], score(s): [0.58], label_name(s): ['nobody']
+090007.jpg:     class id(s): [1], score(s): [0.59], label_name(s): ['someone']
+</code></pre>
+<h1 id="2-安全帽分类模型">2 安全帽分类模型</h1>
+<h2 id="21-数据下载">2.1 数据下载</h2>
+<p><a href="https://paddleclas.bj.bcebos.com/models/PULC/pretrained/safety_helmet_pretrained.pdparams">预训练模型</a><br>
+<a href="https://paddleclas.bj.bcebos.com/models/PULC/inference/safety_helmet_infer.tar">推理模型</a></p>
+<h2 id="22-动态图预测">2.2 动态图预测</h2>
+<pre><code class="language-python">python tools/infer.py -c ppcls/configs/PULC/safety_helmet/PPLCNet_x1_0.yaml -o Global.device=cpu -o Global.checkpoints=models/safety_helmet_pretrained -o Infer.infer_imgs=deploy/images/PULC/safety_helmet/safety_helmet_test_1.png -o Arch.use_sync_bn=False
+
+# 输出
+[{'class_ids': [0], 'scores': [0.8114636987447739], 'label_names': ['wearing_helmet'], 'file_name': 'deploy/images/PULC/safety_helmet\\safety_helmet_test_1.png'}]
+[{'class_ids': [0], 'scores': [0.5641067326068878], 'label_names': ['wearing_helmet'], 'file_name': 'deploy/images/PULC/safety_helmet\\safety_helmet_test_2.png'}]
+</code></pre>
+<h2 id="23-静态图预测">2.3 静态图预测</h2>
+<pre><code>python deploy/python/predict_cls.py -c deploy/configs/PULC/safety_helmet/inference_safety_helmet.yaml -o Global.use_gpu=False -o Global.inference_model_dir=models\PULC_safety_helmet_infer -o Global.infer_imgs=deploy/images/PULC/safety_helmet/
+
+# 输出
+safety_helmet_test_1.png:       class id(s): [1], score(s): [1.00], label_name(s): ['unwearing_helmet']
+safety_helmet_test_2.png:       class id(s): [0], score(s): [1.00], label_name(s): ['wearing_helmet']
+</code></pre>
+<h1 id="3-人体属性识别模型">3 人体属性识别模型</h1>
+<h2 id="31-数据下载">3.1 数据下载</h2>
+<p><a href="https://paddleclas.bj.bcebos.com/models/PULC/pretrained/person_attribute_pretrained.pdparams">预训练模型</a><br>
+<a href="https://paddleclas.bj.bcebos.com/models/PULC/inference/person_attribute_infer.tar">推理模型</a></p>
+<h2 id="32-动态图预测">3.2 动态图预测</h2>
+<pre><code class="language-python">python tools/infer.py -c ppcls/configs/PULC/person_attribute/PPLCNet_x1_0.yaml -o Global.device=cpu -o Global.pretrained_model=models\person_attribute_pretrained -o Infer.infer_imgs=deploy/images/PULC/person_attribute/
+
+# 输出
+[{'attributes': ['Male', 'Age18-60', 'Back', 'Glasses: False', 'Hat: False', 'HoldObjectsInFront: False', 'Backpack', 'Upper: LongSleeve UpperPlaid', 'Lower:  Trousers', 'No boots'], 'output': [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1]}, 
+{'attributes': ['Female', 'Age18-60', 'Side', 'Glasses: False', 'Hat: False', 'HoldObjectsInFront: False', 'No bag', 'Upper: ShortSleeve', 'Lower:  Skirt&amp;Dress', 'No boots'], 'output': [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0]}]
+</code></pre>
 
                 </div>
             </article>
@@ -120,14 +170,14 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://lichuanqi.github.io/hello-gridea/" class="post-title gt-a-link">
-                    Hello Gridea
+                <a href="https://lichuanqi.github.io/paddledetection-ce-shi-jiao-ben-ji-lu/" class="post-title gt-a-link">
+                    PaddleDetection测试脚本记录
                 </a>
             </div>
         
 
         
-            <span id="/xin-nian-xin-qi-xiang-bo-ke-ban-jia-zhi-github//" class="leancloud_visitors" data-flag-title="新年新气象，博客搬家至Github。">
+            <span id="/paddleclas//" class="leancloud_visitors" data-flag-title="PaddleClas测试脚本记录">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count">0</i>
             </span>

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lichuanqi.github.io</id>
     <title>一艘大轮船</title>
-    <updated>2022-10-09T15:03:35.922Z</updated>
+    <updated>2022-10-15T12:19:41.031Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lichuanqi.github.io"/>
     <link rel="self" href="https://lichuanqi.github.io/atom.xml"/>
@@ -10,6 +10,178 @@
     <logo>https://lichuanqi.github.io/images/avatar.png</logo>
     <icon>https://lichuanqi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, 一艘大轮船</rights>
+    <entry>
+        <title type="html"><![CDATA[PaddleClas测试脚本记录]]></title>
+        <id>https://lichuanqi.github.io/paddleclas/</id>
+        <link href="https://lichuanqi.github.io/paddleclas/">
+        </link>
+        <updated>2022-10-15T10:44:09.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1-有人无人分类模型">1 有人/无人分类模型</h1>
+<h2 id="11-数据下载">1.1 数据下载</h2>
+<p><a href="https://paddleclas.bj.bcebos.com/models/PULC/pretrained/person_exists_pretrained.pdparams">预训练模型</a><br>
+<a href="https://paddleclas.bj.bcebos.com/models/PULC/inference/person_exists_infer.tar">推理模型</a></p>
+<h2 id="12-静态图预测">1.2 静态图预测</h2>
+<pre><code>python deploy/python/predict_cls.py -c deploy/configs/PULC/person_exists/inference_person_exists.yaml -o Global.use_gpu=False -o Global.inference_model_dir=models/PULC_person_exists -o Global.infer_imgs=deploy/images/PULC/person_attribute/
+
+# 输出，其中，someone 表示该图里存在人，nobody 表示该图里不存在人。
+090004.jpg:     class id(s): [0], score(s): [0.58], label_name(s): ['nobody']
+090007.jpg:     class id(s): [1], score(s): [0.59], label_name(s): ['someone']
+</code></pre>
+<h1 id="2-安全帽分类模型">2 安全帽分类模型</h1>
+<h2 id="21-数据下载">2.1 数据下载</h2>
+<p><a href="https://paddleclas.bj.bcebos.com/models/PULC/pretrained/safety_helmet_pretrained.pdparams">预训练模型</a><br>
+<a href="https://paddleclas.bj.bcebos.com/models/PULC/inference/safety_helmet_infer.tar">推理模型</a></p>
+<h2 id="22-动态图预测">2.2 动态图预测</h2>
+<pre><code class="language-python">python tools/infer.py -c ppcls/configs/PULC/safety_helmet/PPLCNet_x1_0.yaml -o Global.device=cpu -o Global.checkpoints=models/safety_helmet_pretrained -o Infer.infer_imgs=deploy/images/PULC/safety_helmet/safety_helmet_test_1.png -o Arch.use_sync_bn=False
+
+# 输出
+[{'class_ids': [0], 'scores': [0.8114636987447739], 'label_names': ['wearing_helmet'], 'file_name': 'deploy/images/PULC/safety_helmet\\safety_helmet_test_1.png'}]
+[{'class_ids': [0], 'scores': [0.5641067326068878], 'label_names': ['wearing_helmet'], 'file_name': 'deploy/images/PULC/safety_helmet\\safety_helmet_test_2.png'}]
+</code></pre>
+<h2 id="23-静态图预测">2.3 静态图预测</h2>
+<pre><code>python deploy/python/predict_cls.py -c deploy/configs/PULC/safety_helmet/inference_safety_helmet.yaml -o Global.use_gpu=False -o Global.inference_model_dir=models\PULC_safety_helmet_infer -o Global.infer_imgs=deploy/images/PULC/safety_helmet/
+
+# 输出
+safety_helmet_test_1.png:       class id(s): [1], score(s): [1.00], label_name(s): ['unwearing_helmet']
+safety_helmet_test_2.png:       class id(s): [0], score(s): [1.00], label_name(s): ['wearing_helmet']
+</code></pre>
+<h1 id="3-人体属性识别模型">3 人体属性识别模型</h1>
+<h2 id="31-数据下载">3.1 数据下载</h2>
+<p><a href="https://paddleclas.bj.bcebos.com/models/PULC/pretrained/person_attribute_pretrained.pdparams">预训练模型</a><br>
+<a href="https://paddleclas.bj.bcebos.com/models/PULC/inference/person_attribute_infer.tar">推理模型</a></p>
+<h2 id="32-动态图预测">3.2 动态图预测</h2>
+<pre><code class="language-python">python tools/infer.py -c ppcls/configs/PULC/person_attribute/PPLCNet_x1_0.yaml -o Global.device=cpu -o Global.pretrained_model=models\person_attribute_pretrained -o Infer.infer_imgs=deploy/images/PULC/person_attribute/
+
+# 输出
+[{'attributes': ['Male', 'Age18-60', 'Back', 'Glasses: False', 'Hat: False', 'HoldObjectsInFront: False', 'Backpack', 'Upper: LongSleeve UpperPlaid', 'Lower:  Trousers', 'No boots'], 'output': [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1]}, 
+{'attributes': ['Female', 'Age18-60', 'Side', 'Glasses: False', 'Hat: False', 'HoldObjectsInFront: False', 'No bag', 'Upper: ShortSleeve', 'Lower:  Skirt&amp;Dress', 'No boots'], 'output': [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0]}]
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[PaddleDetection测试脚本记录]]></title>
+        <id>https://lichuanqi.github.io/paddledetection-ce-shi-jiao-ben-ji-lu/</id>
+        <link href="https://lichuanqi.github.io/paddledetection-ce-shi-jiao-ben-ji-lu/">
+        </link>
+        <updated>2022-10-15T10:38:09.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1-吸烟检测测试-20221012">1 吸烟检测测试 20221012</h1>
+<h2 id="11-pipline-行人检测吸烟检测">1.1 pipline 行人检测+吸烟检测</h2>
+<pre><code class="language-bash">python deploy/pipeline/pipeline.py --config deploy\pipeline\config\examples\infer_cfg_smoking.yml --video_file D:\Data\Smoke\test2_video\video3-1.mp4
+</code></pre>
+<h2 id="12-行人检测模块静态图预测">1.2 行人检测模块静态图预测</h2>
+<pre><code>python deploy/python/infer.py --model_dir=models\mot_ppyoloe_l_36e_pipeline --image_file=demo/000000014439_640x640.jpg --device=cpu
+</code></pre>
+<h2 id="13-吸烟检测静态图预测">1.3 吸烟检测静态图预测</h2>
+<pre><code>python deploy/python/infer.py --model_dir models\ppyoloe_crn_s_80e_smoking_visdrone --image_file D:\Data\Smoke\test1\000067.jpg --device=cpu
+</code></pre>
+<h1 id="2-安全帽检测">2 安全帽检测</h1>
+<p>数据在实验室GPU，待更新</p>
+<h2 id="pipline-行人检测安全帽">pipline 行人检测+安全帽</h2>
+<h2 id="安全帽检测模块">安全帽检测模块</h2>
+<h3 id="数据准备">数据准备</h3>
+<h3 id="训练">训练</h3>
+<h3 id="评估">评估</h3>
+<h3 id="动态图预测">动态图预测</h3>
+<h3 id="导出">导出</h3>
+<h3 id="静态图预测">静态图预测</h3>
+<h1 id="3-ppyoloe_plus_crn_l_80e_coco-20221015">3 ppyoloe_plus_crn_l_80e_coco 20221015</h1>
+<h2 id="31-动态图预测">3.1 动态图预测</h2>
+<pre><code>python tools/infer.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_coco.yml -o weights=models\ppyoloe\ppyoloe_plus_crn_m_80e_coco.pdparams use_gpu=false --infer_img=demo\hrnet_demo.jpg
+</code></pre>
+<h2 id="32-动态图导出静态图">3.2 动态图导出静态图</h2>
+<pre><code>python tools/export_model.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_coco.yml -o weights=models\ppyoloe\ppyoloe_plus_crn_m_80e_coco.pdparams use_gpu=false --output_dir models
+</code></pre>
+<h2 id="33-静态图预测">3.3 静态图预测</h2>
+<p>python deploy/python/infer.py --model_dir=models/ppyoloe_plus_crn_m_80e_coco --image_file=demo/000000014439_640x640.jpg --device=cpu</p>
+<h1 id="4-picodet主体检测-20221015">4 picodet主体检测 20221015</h1>
+<h2 id="41-动态图预测">4.1 动态图预测</h2>
+<pre><code>python tools/infer.py -c configs\picodet\application\mainbody_detection\picodet_lcnet_x2_5_640_mainbody.yml --infer_dir=demo --output_dir=output  -o weights=models\picodet\picodet_PPLCNet_x2_5_mainbody_lite_v1.0_pretrained.pdparams --save_results True
+</code></pre>
+<h2 id="42-动态图导出静态图">4.2 动态图导出静态图</h2>
+<pre><code>python tools/export_model.py -c configs\picodet\application\mainbody_detection\picodet_lcnet_x2_5_640_mainbody.yml -o weights=models\picodet\picodet_PPLCNet_x2_5_mainbody_lite_v1.0_pretrained.pdparams --output_dir models
+</code></pre>
+<h2 id="43-静态图预测">4.3 静态图预测</h2>
+<pre><code>python deploy/python/infer.py --model_dir=models\picodet_lcnet_x2_5_640_mainbody --image_file=D:\Data\Retail_Product_Identification\test_image\recognition_2.jpg --device=cpu --save_results True
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[PaddleNLP快递单信息抽取]]></title>
+        <id>https://lichuanqi.github.io/paddlenlp-kuai-di-dan-xin-xi-chou-qu/</id>
+        <link href="https://lichuanqi.github.io/paddlenlp-kuai-di-dan-xin-xi-chou-qu/">
+        </link>
+        <updated>2022-10-15T02:42:03.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="任务目标">任务目标</h1>
+<p>输入“张三18625584663广东省深圳市南山区学府路东百度国际大厦”，目标是识别出其中的“张三”为人名（用符号 P 表示），“18625584663”为电话名（用符号 T 表示），“广东省深圳市南山区百度国际大厦”分别是 1-4 级的地址（分别用 A1~A4 表示，可以释义为省、市、区、街道）。</p>
+<p>这是一个典型的命名实体识别（Named Entity Recognition，NER）场景，各实体类型及相应符号表示见下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">抽取实体/字段</th>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">抽取结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">姓名</td>
+<td style="text-align:center">P</td>
+<td style="text-align:center">张三</td>
+</tr>
+<tr>
+<td style="text-align:center">电话</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">18625584663</td>
+</tr>
+<tr>
+<td style="text-align:center">省</td>
+<td style="text-align:center">A1</td>
+<td style="text-align:center">广东省</td>
+</tr>
+<tr>
+<td style="text-align:center">市</td>
+<td style="text-align:center">A2</td>
+<td style="text-align:center">深圳市</td>
+</tr>
+<tr>
+<td style="text-align:center">区</td>
+<td style="text-align:center">A3</td>
+<td style="text-align:center">南山区</td>
+</tr>
+<tr>
+<td style="text-align:center">详细地址</td>
+<td style="text-align:center">A4</td>
+<td style="text-align:center">百度国际大厦</td>
+</tr>
+</tbody>
+</table>
+<h1 id="依赖安装">依赖安装</h1>
+<p>此处略过</p>
+<h1 id="数据准备">数据准备</h1>
+<h2 id="数据标注格式">数据标注格式</h2>
+<h2 id="数据下载">数据下载</h2>
+<p>下载waybill数据集：https://paddlenlp.bj.bcebos.com/paddlenlp/datasets/waybill.tar.gz<br>
+。解压后文件结构如下</p>
+<pre><code>--waybil
+  |-- train.txt
+  |-- dev.txt
+  |-- test.txt
+  |-- word.dic
+  |-- tag.dic
+</code></pre>
+<h1 id="训练">训练</h1>
+<pre><code>conda activate paddle
+cd D:\Code\PADDLE\PaddleNLP-develop
+python examples\information_extraction\waybill_ie\run_ernie.py --save_dir examples/information_extraction/waybill_ie/ernir_ckpt  --epochs 20 --batch_size 64 --device cpu --data_dir D:\Data\waybill
+</code></pre>
+<h1 id="模型导出">模型导出</h1>
+<pre><code>python examples\information_extraction\waybill_ie\export_model.py --params_path examples\information_extraction\waybill_ie\ernir_ckpt\model_100\model_state.pdparams --output_path examples/information_extraction/waybill_ie/ernir_inference --data_dir D:\Data\waybill
+</code></pre>
+<h1 id="使用导出的模型预测">使用导出的模型预测</h1>
+<pre><code>python examples/information_extraction/waybill_ie/deploy/python/predict.py --model_dir examples\information_extraction\waybill_ie\ernir_inference\ --data_dir D:\Data\waybill
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[使用kenLM训练语言模型]]></title>
         <id>https://lichuanqi.github.io/shi-yong-kenlm-xun-lian-yu-yan-mo-xing/</id>
@@ -440,8 +612,8 @@ pip install opencv-python==3.4.3.18
 - [x] 表示该项目已完成
 </code></pre>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-354112"><label class="task-list-item-label" for="task-item-354112"> 表示该项目未完成；</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5453339"><label class="task-list-item-label" for="task-item-5453339"> 表示该项目已完成</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1212806"><label class="task-list-item-label" for="task-item-1212806"> 表示该项目未完成；</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2422397"><label class="task-list-item-label" for="task-item-2422397"> 表示该项目已完成</label></li>
 </ul>
 <h3 id="引用">引用</h3>
 <pre><code>&gt; 这是一个引用
@@ -563,44 +735,6 @@ else:
 <p>距离实习结束预计还有两周，心情很复杂，既想快点结束又不想结束。想快点结束逃离这个地方，逃离这个让人心寒的地方；不想结束是因为回到学校马上就要准备毕业论文，而且剩下的时间也不多了。</p>
 <p><img src="https://lichuanqi.github.io/post-images/1645888856023.jpg" alt="" loading="lazy"><br>
 图：2022年2月25日在北京首钢滑雪大跳台观赛单板滑雪男子大跳台比赛决赛，苏翊鸣获得北京冬奥会单板滑雪男子大跳台比赛金牌。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[大年初二 坚守岗位中的短暂休息]]></title>
-        <id>https://lichuanqi.github.io/da-nian-chu-er-jian-shou-gang-wei-zhong-de-duan-zan-xiu-xi/</id>
-        <link href="https://lichuanqi.github.io/da-nian-chu-er-jian-shou-gang-wei-zhong-de-duan-zan-xiu-xi/">
-        </link>
-        <updated>2022-02-02T11:52:36.000Z</updated>
-        <content type="html"><![CDATA[<p>今天是大年初二，在复杂的值班表中没有我的名字，可以短暂的休息24小时。</p>
-<p>虽然也没干什么累活，但是感觉很累，上午下午一直在睡😴。</p>
-<p>晚上7：30，等候开一个近期比较重要的处务会，涉及工作地点的变更。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[关于本站]]></title>
-        <id>https://lichuanqi.github.io/guan-yu-ben-zhan/</id>
-        <link href="https://lichuanqi.github.io/guan-yu-ben-zhan/">
-        </link>
-        <updated>2022-02-01T08:04:18.000Z</updated>
-        <content type="html"><![CDATA[<p>欢迎来到我的博客，很高兴遇见你！🤝</p>
-<h2 id="关于本站">🏠 关于本站</h2>
-<p>一艘大轮船，一个分享资源，记录生活的个人网站。</p>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<p>小硕一枚，专业交通运输规划与管理。</p>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<p>哼哼哼</p>
-<h2 id="联系我呀">📬 联系我呀</h2>
-<p>邮箱：lc@dlc618.com（不定期回复）</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[新年新气象，博客搬家至Github。]]></title>
-        <id>https://lichuanqi.github.io/xin-nian-xin-qi-xiang-bo-ke-ban-jia-zhi-github/</id>
-        <link href="https://lichuanqi.github.io/xin-nian-xin-qi-xiang-bo-ke-ban-jia-zhi-github/">
-        </link>
-        <updated>2022-02-01T06:25:39.000Z</updated>
-        <content type="html"><![CDATA[<p>2月1日，之前一直在续费的阿里学生机到期了，而且不能继续白菜价续费了。😅</p>
-<p>决定搬家到Github，采用Gride+Github的方案。👍</p>
 ]]></content>
     </entry>
 </feed>

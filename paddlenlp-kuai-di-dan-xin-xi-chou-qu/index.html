@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>新年新气象，博客搬家至Github。 | 一艘大轮船</title>
+<title>PaddleNLP快递单信息抽取 | 一艘大轮船</title>
 
 <link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1665836378934">
 
@@ -101,17 +101,96 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    新年新气象，博客搬家至Github。
+                    PaddleNLP快递单信息抽取
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2022-02-01 ·
+                        · 2022-10-15 ·
                     </time>
+                    
+                        <a href="https://lichuanqi.github.io/tag/k5x7PO4sV/" class="post-tags">
+                            # 实验
+                        </a>
+                    
+                        <a href="https://lichuanqi.github.io/tag/lKdb_tmDgK/" class="post-tags">
+                            # NLP
+                        </a>
+                    
+                        <a href="https://lichuanqi.github.io/tag/IaNVZy-N5W/" class="post-tags">
+                            # 深度学习
+                        </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>2月1日，之前一直在续费的阿里学生机到期了，而且不能继续白菜价续费了。😅</p>
-<p>决定搬家到Github，采用Gride+Github的方案。👍</p>
+                    <h1 id="任务目标">任务目标</h1>
+<p>输入“张三18625584663广东省深圳市南山区学府路东百度国际大厦”，目标是识别出其中的“张三”为人名（用符号 P 表示），“18625584663”为电话名（用符号 T 表示），“广东省深圳市南山区百度国际大厦”分别是 1-4 级的地址（分别用 A1~A4 表示，可以释义为省、市、区、街道）。</p>
+<p>这是一个典型的命名实体识别（Named Entity Recognition，NER）场景，各实体类型及相应符号表示见下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">抽取实体/字段</th>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">抽取结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">姓名</td>
+<td style="text-align:center">P</td>
+<td style="text-align:center">张三</td>
+</tr>
+<tr>
+<td style="text-align:center">电话</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">18625584663</td>
+</tr>
+<tr>
+<td style="text-align:center">省</td>
+<td style="text-align:center">A1</td>
+<td style="text-align:center">广东省</td>
+</tr>
+<tr>
+<td style="text-align:center">市</td>
+<td style="text-align:center">A2</td>
+<td style="text-align:center">深圳市</td>
+</tr>
+<tr>
+<td style="text-align:center">区</td>
+<td style="text-align:center">A3</td>
+<td style="text-align:center">南山区</td>
+</tr>
+<tr>
+<td style="text-align:center">详细地址</td>
+<td style="text-align:center">A4</td>
+<td style="text-align:center">百度国际大厦</td>
+</tr>
+</tbody>
+</table>
+<h1 id="依赖安装">依赖安装</h1>
+<p>此处略过</p>
+<h1 id="数据准备">数据准备</h1>
+<h2 id="数据标注格式">数据标注格式</h2>
+<h2 id="数据下载">数据下载</h2>
+<p>下载waybill数据集：https://paddlenlp.bj.bcebos.com/paddlenlp/datasets/waybill.tar.gz<br>
+。解压后文件结构如下</p>
+<pre><code>--waybil
+  |-- train.txt
+  |-- dev.txt
+  |-- test.txt
+  |-- word.dic
+  |-- tag.dic
+</code></pre>
+<h1 id="训练">训练</h1>
+<pre><code>conda activate paddle
+cd D:\Code\PADDLE\PaddleNLP-develop
+python examples\information_extraction\waybill_ie\run_ernie.py --save_dir examples/information_extraction/waybill_ie/ernir_ckpt  --epochs 20 --batch_size 64 --device cpu --data_dir D:\Data\waybill
+</code></pre>
+<h1 id="模型导出">模型导出</h1>
+<pre><code>python examples\information_extraction\waybill_ie\export_model.py --params_path examples\information_extraction\waybill_ie\ernir_ckpt\model_100\model_state.pdparams --output_path examples/information_extraction/waybill_ie/ernir_inference --data_dir D:\Data\waybill
+</code></pre>
+<h1 id="使用导出的模型预测">使用导出的模型预测</h1>
+<pre><code>python examples/information_extraction/waybill_ie/deploy/python/predict.py --model_dir examples\information_extraction\waybill_ie\ernir_inference\ --data_dir D:\Data\waybill
+</code></pre>
 
                 </div>
             </article>
@@ -120,14 +199,14 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://lichuanqi.github.io/hello-gridea/" class="post-title gt-a-link">
-                    Hello Gridea
+                <a href="https://lichuanqi.github.io/shi-yong-kenlm-xun-lian-yu-yan-mo-xing/" class="post-title gt-a-link">
+                    使用kenLM训练语言模型
                 </a>
             </div>
         
 
         
-            <span id="/xin-nian-xin-qi-xiang-bo-ke-ban-jia-zhi-github//" class="leancloud_visitors" data-flag-title="新年新气象，博客搬家至Github。">
+            <span id="/paddlenlp-kuai-di-dan-xin-xi-chou-qu//" class="leancloud_visitors" data-flag-title="PaddleNLP快递单信息抽取">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count">0</i>
             </span>
