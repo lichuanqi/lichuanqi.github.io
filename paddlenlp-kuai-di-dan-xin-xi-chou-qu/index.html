@@ -6,7 +6,7 @@
 
 <title>PaddleNLP快递单信息抽取 | 一艘大轮船</title>
 
-<link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1665836378934">
+<link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1665905985938">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://lichuanqi.github.io/styles/main.css">
@@ -77,7 +77,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1665836378934"
+            <form id="gridea-search-form" style="position: relative" data-update="1665905985938"
                 action="/search/">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
@@ -189,7 +189,15 @@ python examples\information_extraction\waybill_ie\run_ernie.py --save_dir exampl
 <pre><code>python examples\information_extraction\waybill_ie\export_model.py --params_path examples\information_extraction\waybill_ie\ernir_ckpt\model_100\model_state.pdparams --output_path examples/information_extraction/waybill_ie/ernir_inference --data_dir D:\Data\waybill
 </code></pre>
 <h1 id="使用导出的模型预测">使用导出的模型预测</h1>
-<pre><code>python examples/information_extraction/waybill_ie/deploy/python/predict.py --model_dir examples\information_extraction\waybill_ie\ernir_inference\ --data_dir D:\Data\waybill
+<pre><code class="language-python">python examples/information_extraction/waybill_ie/deploy/python/predict.py --model_dir examples\information_extraction\waybill_ie\ernir_inference\ --data_dir D:\Data\waybill
+
+# 输出
+('黑龙江省', 'A1')('双鸭山市', 'A2')('尖山区', 'A3')('八马路与东平行路交叉口北40米', 'A4')('韦业涛', 'P')('18600009172', 'T')
+('广西壮族自治区', 'A1')('桂林市', 'A2')('雁山区', 'A3')('雁山镇西龙村老年活动中心', 'A4')('17610348888', 'T')('羊卓卫', 'P')
+('15652864561', 'T')('河南省', 'A1')('开封市', 'A2')('顺河回族区', 'A3')('顺河区公园路32号', 'A4')('赵本山', 'P')
+('河北省', 'A1')('唐山市', 'A2')('玉田县', 'A3')('无终大街159号', 'A4')('18614253058', 'T')('尚汉生', 'P')
+('台湾', 'A1')('台中市', 'A2')('北区', 'A3')('北区锦新街18号', 'A4')('18511226708', 'T')('蓟丽', 'P')
+('廖梓琪', 'P')('18514743222', 'T')('湖北省', 'A1')('宜昌市', 'A2')('长阳土家族自治县', 'A3')('贺家坪镇贺家坪村一组临河1号', 'A4')
 </code></pre>
 
                 </div>

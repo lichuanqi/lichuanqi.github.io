@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lichuanqi.github.io</id>
     <title>一艘大轮船</title>
-    <updated>2022-10-15T12:19:41.031Z</updated>
+    <updated>2022-10-16T07:53:45.113Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lichuanqi.github.io"/>
     <link rel="self" href="https://lichuanqi.github.io/atom.xml"/>
@@ -56,6 +56,55 @@ safety_helmet_test_2.png:       class id(s): [0], score(s): [1.00], label_name(s
 [{'attributes': ['Male', 'Age18-60', 'Back', 'Glasses: False', 'Hat: False', 'HoldObjectsInFront: False', 'Backpack', 'Upper: LongSleeve UpperPlaid', 'Lower:  Trousers', 'No boots'], 'output': [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1]}, 
 {'attributes': ['Female', 'Age18-60', 'Side', 'Glasses: False', 'Hat: False', 'HoldObjectsInFront: False', 'No bag', 'Upper: ShortSleeve', 'Lower:  Skirt&amp;Dress', 'No boots'], 'output': [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0]}]
 </code></pre>
+<h1 id="4-pp-shitu-v2图像识别系统-20221016">4 PP-ShiTu V2图像识别系统 20221016</h1>
+<h2 id="41-基本介绍">4.1 基本介绍</h2>
+<p>PP-ShiTuV2 是基于 PP-ShiTuV1 改进的一个实用轻量级通用图像识别系统，由主体检测、特征提取、向量检索三个模块构成，相比 PP-ShiTuV1 具有更高的识别精度、更强的泛化能力以及相近的推理速度</p>
+<h2 id="42-数据下载">4.2 数据下载</h2>
+<p><a href="https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/rec/models/inference/picodet_PPLCNet_x2_5_mainbody_lite_v1.0_infer.tar">主体检测inference模型: picodet_PPLCNet_x2_5_mainbody_lite_v1.0_infer</a></p>
+<p><a href="https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/rec/models/pretrain/PPShiTuV2/general_PPLCNetV2_base_pretrained_v1.0.pdparams">特征提取动态图模型: general_PPLCNetV2_base_pretrained_v1.0_infer</a><br>
+<a href="https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/rec/models/inference/PP-ShiTuV2/general_PPLCNetV2_base_pretrained_v1.0_infer.tar">特征提取inference模型: general_PPLCNetV2_base_pretrained_v1.0_infer</a></p>
+<p><a href="https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/rec/data/drink_dataset_v2.0.tar">测试数据drink_dataset_v2.0</a></p>
+<h2 id="43-全流程静态图预测">4.3 全流程静态图预测</h2>
+<pre><code class="language-python"># 预测单张图片
+python deploy/python/predict_system.py -c deploy/configs/inference_general.yaml -o Global.use_gpu=False -o Global.infer_imgs=deploy/drink_dataset_v2.0/test_images/001.jpeg
+# 输出
+[{'bbox': [0, 0, 600, 600], 'rec_docs': '红牛-强化型', 'rec_scores': 0.74081033}]
+
+# 预测文件夹内所有图片
+python deploy/python/predict_system.py -c deploy/configs/inference_general.yaml -o Global.use_gpu=False -o Global.infer_imgs=deploy/drink_dataset_v2.0/test_images
+# 输出
+[{'bbox': [0, 0, 600, 600], 'rec_docs': '红牛-强化型', 'rec_scores': 0.74081033}]
+Inference: 78.38726043701172 ms per batch image
+[{'bbox': [0, 0, 514, 436], 'rec_docs': '康师傅矿物质水', 'rec_scores': 0.6918598}]
+Inference: 72.65782356262207 ms per batch image
+[{'bbox': [138, 40, 573, 1198], 'rec_docs': '乐虎功能饮料', 'rec_scores': 0.6821406}]
+Inference: 72.5698471069336 ms per batch image
+[{'bbox': [328, 7, 467, 272], 'rec_docs': '脉动', 'rec_scores': 0.6040604}]
+Inference: 79.4534683227539 ms per batch image
+[{'bbox': [242, 82, 498, 726], 'rec_docs': '味全_每日C', 'rec_scores': 0.54286546}]
+Inference: 73.96435737609863 ms per batch image
+[{'bbox': [437, 71, 660, 728], 'rec_docs': '元气森林', 'rec_scores': 0.77402496}, {'bbox': [221, 72, 449, 701], 'rec_docs': '元气森林', 'rec_scores': 0.6950992}, {'bbox': [794, 104, 979, 652], 'rec_docs': '元气森林', 'rec_scores': 0.6305152}]
+Inference: 78.69076728820801 ms per batch image
+[{'bbox': [0, 0, 768, 1024], 'rec_docs': '脉动', 'rec_scores': 0.5190187}]
+Inference: 79.32877540588379 ms per batch image
+[{'bbox': [233, 57, 525, 1038], 'rec_docs': '康师傅冰红茶', 'rec_scores': 0.6001749}]
+Inference: 76.13968849182129 ms per batch image
+[{'bbox': [493, 13, 803, 829], 'rec_docs': '康师傅冰红茶', 'rec_scores': 0.70879036}, {'bbox': [189, 17, 495, 793], 'rec_docs': '康师傅冰红茶', 'rec_scores': 0.69420344}]
+Inference: 71.82860374450684 ms per batch image
+[]
+Inference: 91.88318252563477 ms per batch image
+[]
+Inference: 75.86908340454102 ms per batch image
+[{'bbox': [0, 0, 730, 1095], 'rec_docs': '农夫山泉-饮用天然水', 'rec_scores': 0.68553746}]
+Inference: 74.47957992553711 ms per batch image
+</code></pre>
+<h2 id="44-主体检测模块">4.4 主体检测模块</h2>
+<pre><code class="language-python"># 预测单张图片
+python deploy/python/predict_det.py -c deploy/configs/inference_general.yaml -o Global.use_gpu=False -o Global.infer_imgs=deploy/drink_dataset_v2.0/test_images/002.jpeg
+# 输出
+[{'class_id': 0, 'score': 0.8008015, 'bbox': array([2.3382977e+02, 1.4137268e-02, 3.7298141e+02, 4.3600000e+02],
+      dtype=float32), 'label_name': 'foreground'}, {'class_id': 0, 'score': 0.42941576, 'bbox': array([  0.     , 272.02524, 514.     , 435.15088], dtype=float32), 'label_name': 'foreground'}, {'class_id': 0, 'score': 0.26006204, 'bbox': array([229.9466 , 266.22577, 379.64105, 435.57114], dtype=float32), 'label_name': 'foreground'}, {'class_id': 0, 'score': 0.21821804, 'bbox': array([234.0829 , 279.89706, 514.     , 435.49277], dtype=float32), 'label_name': 'foreground'}, {'class_id': 0, 'score': 0.21736334, 'bbox': array([  0.       ,   3.8394742, 472.9032   , 435.02594  ], dtype=float32), 'label_name': 'foreground'}]
+</code></pre>
 ]]></content>
     </entry>
     <entry>
@@ -69,7 +118,15 @@ safety_helmet_test_2.png:       class id(s): [0], score(s): [1.00], label_name(s
 <pre><code class="language-bash">python deploy/pipeline/pipeline.py --config deploy\pipeline\config\examples\infer_cfg_smoking.yml --video_file D:\Data\Smoke\test2_video\video3-1.mp4
 </code></pre>
 <h2 id="12-行人检测模块静态图预测">1.2 行人检测模块静态图预测</h2>
-<pre><code>python deploy/python/infer.py --model_dir=models\mot_ppyoloe_l_36e_pipeline --image_file=demo/000000014439_640x640.jpg --device=cpu
+<pre><code class="language-bash"># 单张图片
+python deploy/python/infer.py --model_dir=models\mot_ppyoloe_l_36e_pipeline --image_file=demo/000000014439_640x640.jpg --device=cpu
+
+# 单个视频
+python deploy/python/infer.py --model_dir=models\mot_ppyoloe_l_36e_pipeline --video_file=D:/Data/Smoke/test2_video/video3-1.mp4 --device=cpu
+# 图像中有人时的输出结果
+detect frame: 357
+Test iter 0
+class_id:0, confidence:0.9342, left_top:[183.13,122.14],right_bottom:[247.16,245.90]
 </code></pre>
 <h2 id="13-吸烟检测静态图预测">1.3 吸烟检测静态图预测</h2>
 <pre><code>python deploy/python/infer.py --model_dir models\ppyoloe_crn_s_80e_smoking_visdrone --image_file D:\Data\Smoke\test1\000067.jpg --device=cpu
@@ -178,7 +235,15 @@ python examples\information_extraction\waybill_ie\run_ernie.py --save_dir exampl
 <pre><code>python examples\information_extraction\waybill_ie\export_model.py --params_path examples\information_extraction\waybill_ie\ernir_ckpt\model_100\model_state.pdparams --output_path examples/information_extraction/waybill_ie/ernir_inference --data_dir D:\Data\waybill
 </code></pre>
 <h1 id="使用导出的模型预测">使用导出的模型预测</h1>
-<pre><code>python examples/information_extraction/waybill_ie/deploy/python/predict.py --model_dir examples\information_extraction\waybill_ie\ernir_inference\ --data_dir D:\Data\waybill
+<pre><code class="language-python">python examples/information_extraction/waybill_ie/deploy/python/predict.py --model_dir examples\information_extraction\waybill_ie\ernir_inference\ --data_dir D:\Data\waybill
+
+# 输出
+('黑龙江省', 'A1')('双鸭山市', 'A2')('尖山区', 'A3')('八马路与东平行路交叉口北40米', 'A4')('韦业涛', 'P')('18600009172', 'T')
+('广西壮族自治区', 'A1')('桂林市', 'A2')('雁山区', 'A3')('雁山镇西龙村老年活动中心', 'A4')('17610348888', 'T')('羊卓卫', 'P')
+('15652864561', 'T')('河南省', 'A1')('开封市', 'A2')('顺河回族区', 'A3')('顺河区公园路32号', 'A4')('赵本山', 'P')
+('河北省', 'A1')('唐山市', 'A2')('玉田县', 'A3')('无终大街159号', 'A4')('18614253058', 'T')('尚汉生', 'P')
+('台湾', 'A1')('台中市', 'A2')('北区', 'A3')('北区锦新街18号', 'A4')('18511226708', 'T')('蓟丽', 'P')
+('廖梓琪', 'P')('18514743222', 'T')('湖北省', 'A1')('宜昌市', 'A2')('长阳土家族自治县', 'A3')('贺家坪镇贺家坪村一组临河1号', 'A4')
 </code></pre>
 ]]></content>
     </entry>
@@ -612,8 +677,8 @@ pip install opencv-python==3.4.3.18
 - [x] 表示该项目已完成
 </code></pre>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1212806"><label class="task-list-item-label" for="task-item-1212806"> 表示该项目未完成；</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2422397"><label class="task-list-item-label" for="task-item-2422397"> 表示该项目已完成</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7736225"><label class="task-list-item-label" for="task-item-7736225"> 表示该项目未完成；</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6862221"><label class="task-list-item-label" for="task-item-6862221"> 表示该项目已完成</label></li>
 </ul>
 <h3 id="引用">引用</h3>
 <pre><code>&gt; 这是一个引用

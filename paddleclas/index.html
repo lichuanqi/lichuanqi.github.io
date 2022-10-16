@@ -6,7 +6,7 @@
 
 <title>PaddleClas测试脚本记录 | 一艘大轮船</title>
 
-<link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1665836378934">
+<link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1665905985938">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://lichuanqi.github.io/styles/main.css">
@@ -77,7 +77,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1665836378934"
+            <form id="gridea-search-form" style="position: relative" data-update="1665905985938"
                 action="/search/">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
@@ -161,6 +161,55 @@ safety_helmet_test_2.png:       class id(s): [0], score(s): [1.00], label_name(s
 # 输出
 [{'attributes': ['Male', 'Age18-60', 'Back', 'Glasses: False', 'Hat: False', 'HoldObjectsInFront: False', 'Backpack', 'Upper: LongSleeve UpperPlaid', 'Lower:  Trousers', 'No boots'], 'output': [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1]}, 
 {'attributes': ['Female', 'Age18-60', 'Side', 'Glasses: False', 'Hat: False', 'HoldObjectsInFront: False', 'No bag', 'Upper: ShortSleeve', 'Lower:  Skirt&amp;Dress', 'No boots'], 'output': [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0]}]
+</code></pre>
+<h1 id="4-pp-shitu-v2图像识别系统-20221016">4 PP-ShiTu V2图像识别系统 20221016</h1>
+<h2 id="41-基本介绍">4.1 基本介绍</h2>
+<p>PP-ShiTuV2 是基于 PP-ShiTuV1 改进的一个实用轻量级通用图像识别系统，由主体检测、特征提取、向量检索三个模块构成，相比 PP-ShiTuV1 具有更高的识别精度、更强的泛化能力以及相近的推理速度</p>
+<h2 id="42-数据下载">4.2 数据下载</h2>
+<p><a href="https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/rec/models/inference/picodet_PPLCNet_x2_5_mainbody_lite_v1.0_infer.tar">主体检测inference模型: picodet_PPLCNet_x2_5_mainbody_lite_v1.0_infer</a></p>
+<p><a href="https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/rec/models/pretrain/PPShiTuV2/general_PPLCNetV2_base_pretrained_v1.0.pdparams">特征提取动态图模型: general_PPLCNetV2_base_pretrained_v1.0_infer</a><br>
+<a href="https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/rec/models/inference/PP-ShiTuV2/general_PPLCNetV2_base_pretrained_v1.0_infer.tar">特征提取inference模型: general_PPLCNetV2_base_pretrained_v1.0_infer</a></p>
+<p><a href="https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/rec/data/drink_dataset_v2.0.tar">测试数据drink_dataset_v2.0</a></p>
+<h2 id="43-全流程静态图预测">4.3 全流程静态图预测</h2>
+<pre><code class="language-python"># 预测单张图片
+python deploy/python/predict_system.py -c deploy/configs/inference_general.yaml -o Global.use_gpu=False -o Global.infer_imgs=deploy/drink_dataset_v2.0/test_images/001.jpeg
+# 输出
+[{'bbox': [0, 0, 600, 600], 'rec_docs': '红牛-强化型', 'rec_scores': 0.74081033}]
+
+# 预测文件夹内所有图片
+python deploy/python/predict_system.py -c deploy/configs/inference_general.yaml -o Global.use_gpu=False -o Global.infer_imgs=deploy/drink_dataset_v2.0/test_images
+# 输出
+[{'bbox': [0, 0, 600, 600], 'rec_docs': '红牛-强化型', 'rec_scores': 0.74081033}]
+Inference: 78.38726043701172 ms per batch image
+[{'bbox': [0, 0, 514, 436], 'rec_docs': '康师傅矿物质水', 'rec_scores': 0.6918598}]
+Inference: 72.65782356262207 ms per batch image
+[{'bbox': [138, 40, 573, 1198], 'rec_docs': '乐虎功能饮料', 'rec_scores': 0.6821406}]
+Inference: 72.5698471069336 ms per batch image
+[{'bbox': [328, 7, 467, 272], 'rec_docs': '脉动', 'rec_scores': 0.6040604}]
+Inference: 79.4534683227539 ms per batch image
+[{'bbox': [242, 82, 498, 726], 'rec_docs': '味全_每日C', 'rec_scores': 0.54286546}]
+Inference: 73.96435737609863 ms per batch image
+[{'bbox': [437, 71, 660, 728], 'rec_docs': '元气森林', 'rec_scores': 0.77402496}, {'bbox': [221, 72, 449, 701], 'rec_docs': '元气森林', 'rec_scores': 0.6950992}, {'bbox': [794, 104, 979, 652], 'rec_docs': '元气森林', 'rec_scores': 0.6305152}]
+Inference: 78.69076728820801 ms per batch image
+[{'bbox': [0, 0, 768, 1024], 'rec_docs': '脉动', 'rec_scores': 0.5190187}]
+Inference: 79.32877540588379 ms per batch image
+[{'bbox': [233, 57, 525, 1038], 'rec_docs': '康师傅冰红茶', 'rec_scores': 0.6001749}]
+Inference: 76.13968849182129 ms per batch image
+[{'bbox': [493, 13, 803, 829], 'rec_docs': '康师傅冰红茶', 'rec_scores': 0.70879036}, {'bbox': [189, 17, 495, 793], 'rec_docs': '康师傅冰红茶', 'rec_scores': 0.69420344}]
+Inference: 71.82860374450684 ms per batch image
+[]
+Inference: 91.88318252563477 ms per batch image
+[]
+Inference: 75.86908340454102 ms per batch image
+[{'bbox': [0, 0, 730, 1095], 'rec_docs': '农夫山泉-饮用天然水', 'rec_scores': 0.68553746}]
+Inference: 74.47957992553711 ms per batch image
+</code></pre>
+<h2 id="44-主体检测模块">4.4 主体检测模块</h2>
+<pre><code class="language-python"># 预测单张图片
+python deploy/python/predict_det.py -c deploy/configs/inference_general.yaml -o Global.use_gpu=False -o Global.infer_imgs=deploy/drink_dataset_v2.0/test_images/002.jpeg
+# 输出
+[{'class_id': 0, 'score': 0.8008015, 'bbox': array([2.3382977e+02, 1.4137268e-02, 3.7298141e+02, 4.3600000e+02],
+      dtype=float32), 'label_name': 'foreground'}, {'class_id': 0, 'score': 0.42941576, 'bbox': array([  0.     , 272.02524, 514.     , 435.15088], dtype=float32), 'label_name': 'foreground'}, {'class_id': 0, 'score': 0.26006204, 'bbox': array([229.9466 , 266.22577, 379.64105, 435.57114], dtype=float32), 'label_name': 'foreground'}, {'class_id': 0, 'score': 0.21821804, 'bbox': array([234.0829 , 279.89706, 514.     , 435.49277], dtype=float32), 'label_name': 'foreground'}, {'class_id': 0, 'score': 0.21736334, 'bbox': array([  0.       ,   3.8394742, 472.9032   , 435.02594  ], dtype=float32), 'label_name': 'foreground'}]
 </code></pre>
 
                 </div>
