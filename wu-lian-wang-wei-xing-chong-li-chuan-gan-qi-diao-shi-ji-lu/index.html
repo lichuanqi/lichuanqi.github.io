@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>新年新气象，博客搬家至Github。 | 一艘大轮船</title>
+<title>物联网微型重力传感器调试记录 | 一艘大轮船</title>
 
 <link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1666658890150">
 
@@ -101,17 +101,74 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    新年新气象，博客搬家至Github。
+                    物联网微型重力传感器调试记录
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2022-02-01 ·
+                        · 2022-10-19 ·
                     </time>
                     
                 </div>
                 <div class="post-content">
-                    <p>2月1日，之前一直在续费的阿里学生机到期了，而且不能继续白菜价续费了。😅</p>
-<p>决定搬家到Github，采用Gride+Github的方案。👍</p>
+                    <h1 id="1-传感器直连电脑串口测试">1 传感器直连电脑串口测试</h1>
+<h2 id="11-接线">1.1 接线</h2>
+<p>使用传感器，型号：蚌埠 LCF-6-V，接线方式如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">USB转485接口</th>
+<th style="text-align:center">传感器变送器接口</th>
+<th style="text-align:center">电源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">T/R-</td>
+<td style="text-align:center">白</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">T/R+</td>
+<td style="text-align:center">绿</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">红</td>
+<td style="text-align:center">24V+</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">黑</td>
+<td style="text-align:center">24V-</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-串口调试工具测试">1.2 串口调试工具测试</h2>
+<h3 id="参数设置">参数设置</h3>
+<p>串口号：COM4<br>
+波特率：2400～～～～38400，，，，默认默认 9600）。<br>
+数据位：8<br>
+校验位：None<br>
+停止位：1.0</p>
+<h3 id="读当前校准系数">读当前校准系数</h3>
+<p>SEND：AA AA AA 01 B3 00 00 18<br>
+RECV：BB BB BB 01 B3 06 02 02 02 0D<br>
+其中数据位“06 02”转为十进制为“1538”，“02”表示小数点位于十位，“02”表示单位为“Kg”</p>
+<h3 id="传感器零点校准">传感器零点校准</h3>
+<p>SEND：AA AA AA 01 A7 00 00 0C<br>
+RECV：BB BB BB 01 A7 00 00 02 02 1D</p>
+<h3 id="变送器输出校准">变送器输出校准</h3>
+<p>功能：对变送器数字输出进行校准，需需加确定的负载<br>
+说明：在对变送器数字输出校准 在对变送器数字输出校准前，读出读出原来的校准系数，按照按照以下公式 1 计算出修改后的系数，<br>
+校准前数字输出值/原来的校准系数数数数 = 校准后的数字输出值/修改后的校准系数…(公式 1)<br>
+SEND：AA AA AA 01 A8 03 E8 E8<br>
+RECV：BB BB BB 01 A8 03 E8 02 02 F9</p>
+<h3 id="单次输出模式">单次输出模式</h3>
+<p>设置变送器数字输出模式为单次输出模式（实时实时采集时定时发送该指令）<br>
+SEND：AA AA AA 01 B1 00 00 1A<br>
+RECV：</p>
+<h2 id="python测试">python测试</h2>
 
                 </div>
             </article>
@@ -120,14 +177,14 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://lichuanqi.github.io/hello-gridea/" class="post-title gt-a-link">
-                    Hello Gridea
+                <a href="https://lichuanqi.github.io/paddleclas/" class="post-title gt-a-link">
+                    PaddleClas测试脚本记录
                 </a>
             </div>
         
 
         
-            <span id="/xin-nian-xin-qi-xiang-bo-ke-ban-jia-zhi-github//" class="leancloud_visitors" data-flag-title="新年新气象，博客搬家至Github。">
+            <span id="/wu-lian-wang-wei-xing-chong-li-chuan-gan-qi-diao-shi-ji-lu//" class="leancloud_visitors" data-flag-title="物联网微型重力传感器调试记录">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count">0</i>
             </span>

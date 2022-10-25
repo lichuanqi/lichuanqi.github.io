@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lichuanqi.github.io</id>
     <title>一艘大轮船</title>
-    <updated>2022-10-16T08:36:03.989Z</updated>
+    <updated>2022-10-25T00:48:32.980Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lichuanqi.github.io"/>
     <link rel="self" href="https://lichuanqi.github.io/atom.xml"/>
@@ -10,6 +10,104 @@
     <logo>https://lichuanqi.github.io/images/avatar.png</logo>
     <icon>https://lichuanqi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, 一艘大轮船</rights>
+    <entry>
+        <title type="html"><![CDATA[Linux使用screen命令实现退出远程连接程序不终止]]></title>
+        <id>https://lichuanqi.github.io/linux-shi-yong-screen-ming-ling-shi-xian-tui-chu-yuan-cheng-lian-jie-cheng-xu-bu-zhong-zhi/</id>
+        <link href="https://lichuanqi.github.io/linux-shi-yong-screen-ming-ling-shi-xian-tui-chu-yuan-cheng-lian-jie-cheng-xu-bu-zhong-zhi/">
+        </link>
+        <updated>2022-10-21T04:47:34.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1-介绍">1 介绍</h1>
+<p>screen命令类似于“虚拟桌面”的概念，可以启动一个Linux下的虚拟桌面，在其中可以和普通终端一样执行各种命令。可以实现远程操作服务器把程序运行起来，退出远程后程序不终止</p>
+<h1 id="2-安装">2 安装</h1>
+<pre><code class="language-bash"># 检查是否安装
+screen -ls
+# 安装
+sudo apt install screen
+</code></pre>
+<h1 id="3-使用">3 使用</h1>
+<pre><code class="language-bash"># 创建窗口
+screen -S name
+# 退出当前窗口
+ctrl +a d
+# 查看已创建窗口
+screen -ls
+# 关闭窗口
+ctrl+d
+
+# 进入名为name的窗口
+screen -r name
+# 远程连接进入screen窗口后突然掉线，重连遇到进不去窗口时可以通过以下命令踢掉上一个进入窗口的进程，然后进入窗口
+screen -D -r name
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[物联网微型重力传感器调试记录]]></title>
+        <id>https://lichuanqi.github.io/wu-lian-wang-wei-xing-chong-li-chuan-gan-qi-diao-shi-ji-lu/</id>
+        <link href="https://lichuanqi.github.io/wu-lian-wang-wei-xing-chong-li-chuan-gan-qi-diao-shi-ji-lu/">
+        </link>
+        <updated>2022-10-19T01:40:25.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1-传感器直连电脑串口测试">1 传感器直连电脑串口测试</h1>
+<h2 id="11-接线">1.1 接线</h2>
+<p>使用传感器，型号：蚌埠 LCF-6-V，接线方式如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">USB转485接口</th>
+<th style="text-align:center">传感器变送器接口</th>
+<th style="text-align:center">电源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">T/R-</td>
+<td style="text-align:center">白</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">T/R+</td>
+<td style="text-align:center">绿</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">红</td>
+<td style="text-align:center">24V+</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">黑</td>
+<td style="text-align:center">24V-</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-串口调试工具测试">1.2 串口调试工具测试</h2>
+<h3 id="参数设置">参数设置</h3>
+<p>串口号：COM4<br>
+波特率：2400～～～～38400，，，，默认默认 9600）。<br>
+数据位：8<br>
+校验位：None<br>
+停止位：1.0</p>
+<h3 id="读当前校准系数">读当前校准系数</h3>
+<p>SEND：AA AA AA 01 B3 00 00 18<br>
+RECV：BB BB BB 01 B3 06 02 02 02 0D<br>
+其中数据位“06 02”转为十进制为“1538”，“02”表示小数点位于十位，“02”表示单位为“Kg”</p>
+<h3 id="传感器零点校准">传感器零点校准</h3>
+<p>SEND：AA AA AA 01 A7 00 00 0C<br>
+RECV：BB BB BB 01 A7 00 00 02 02 1D</p>
+<h3 id="变送器输出校准">变送器输出校准</h3>
+<p>功能：对变送器数字输出进行校准，需需加确定的负载<br>
+说明：在对变送器数字输出校准 在对变送器数字输出校准前，读出读出原来的校准系数，按照按照以下公式 1 计算出修改后的系数，<br>
+校准前数字输出值/原来的校准系数数数数 = 校准后的数字输出值/修改后的校准系数…(公式 1)<br>
+SEND：AA AA AA 01 A8 03 E8 E8<br>
+RECV：BB BB BB 01 A8 03 E8 02 02 F9</p>
+<h3 id="单次输出模式">单次输出模式</h3>
+<p>设置变送器数字输出模式为单次输出模式（实时实时采集时定时发送该指令）<br>
+SEND：AA AA AA 01 B1 00 00 1A<br>
+RECV：</p>
+<h2 id="python测试">python测试</h2>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[PaddleClas测试脚本记录]]></title>
         <id>https://lichuanqi.github.io/paddleclas/</id>
@@ -136,9 +234,61 @@ class_id:0, confidence:0.9342, left_top:[183.13,122.14],right_bottom:[247.16,245
 <h2 id="pipline-行人检测安全帽">pipline 行人检测+安全帽</h2>
 <h2 id="安全帽检测模块">安全帽检测模块</h2>
 <h3 id="数据准备">数据准备</h3>
+<p>下载数据集后解压，文件夹按照以下结构重命名</p>
+<pre><code>-- Helmet
+  |-- Annotations
+    |-- 001.jpg
+    |-- ... 
+  |-- JPEGImages
+    |-- 001.xml
+    |-- ... 
+</code></pre>
+<p>使用以下数据将数据划分为训练集、验证集、测试集</p>
+<pre><code>paddlex --split_dataset --format VOC --dataset_dir datasets/Helmet --val_value 0.2 --test_value 0.1
+</code></pre>
+<p>完成后数据集文件结构如下</p>
+<pre><code>-- Helmet
+  |-- Annotations
+    |-- 001.jpg
+    |-- ... 
+  |-- JPEGImages
+    |-- 001.xml
+    |-- ... 
+  |-- train_list.txt
+  |-- val_list.txt
+  |-- test_list.txt
+  |-- labels.txt
+</code></pre>
 <h3 id="训练">训练</h3>
+<pre><code>python -m paddle.distributed.launch --gpus 0,1 tools/train.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_Helmet.yml --use_vdl True --vdl_log_dir output/scalar --eval
+
+# 可视化查看训练数据
+visualdl --logdir output/scalar --host 0.0.0.0 --port 8041
+</code></pre>
 <h3 id="评估">评估</h3>
+<pre><code class="language-python"># 评估验证集结果
+CUDA_VISIBLE_DEVICES=0 python tools/eval.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_Helmet.yml -o weights=output/ppyoloe_plus_crn_m_80e_Helmet/weights/best_model.pdparams
+# 输出
+[10/17 12:24:57] ppdet.engine INFO: Eval iter: 0
+[10/17 12:25:09] ppdet.engine INFO: Eval iter: 100
+[10/17 12:25:21] ppdet.engine INFO: Eval iter: 200
+[10/17 12:25:33] ppdet.engine INFO: Eval iter: 300
+[10/17 12:25:45] ppdet.engine INFO: Eval iter: 400
+[10/17 12:25:57] ppdet.metrics.metrics INFO: Accumulating evaluatation results...
+[10/17 12:25:57] ppdet.metrics.metrics INFO: mAP(0.50, 11point) = 61.77%
+[10/17 12:25:57] ppdet.engine INFO: Total sample number: 1000, averge FPS: 16.343893553616113
+</code></pre>
 <h3 id="动态图预测">动态图预测</h3>
+<pre><code># 预测单张图片
+CUDA_VISIBLE_DEVICES=0 python tools/infer.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_Helmet.yml -o weights=output/ppyoloe_plus_crn_m_80e_Helmet/weights/best_model.pdparams --infer_img=dataset/Helmet/JPEGImages/hard_hat_workers1783.png --output_dir output --visualize True
+# 输出
+fer_img=dataset/Helmet/JPEGImages/hard_hat_workers1783.png --output_dir output --visualize True
+W1017 12:26:25.761562 788568 gpu_resources.cc:61] Please NOTE: device: 0, GPU Compute Capability: 6.1, Driver API Version: 11.6, Runtime API Version: 10.2
+W1017 12:26:25.769194 788568 gpu_resources.cc:91] device: 0, cuDNN Version: 7.6.
+[10/17 12:26:28] ppdet.utils.checkpoint INFO: Finish loading model weights: output/ppyoloe_plus_crn_m_80e_Helmet/weights/best_model.pdparams
+100%|█████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:01&lt;00:00,  1.30s/it]
+[10/17 12:26:29] ppdet.engine INFO: Detection bbox results save in output/hard_hat_workers1783.png
+</code></pre>
 <h3 id="导出">导出</h3>
 <h3 id="静态图预测">静态图预测</h3>
 <h1 id="3-ppyoloe_plus_crn_l_80e_coco-20221015">3 ppyoloe_plus_crn_l_80e_coco 20221015</h1>
@@ -677,8 +827,8 @@ pip install opencv-python==3.4.3.18
 - [x] 表示该项目已完成
 </code></pre>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4689337"><label class="task-list-item-label" for="task-item-4689337"> 表示该项目未完成；</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4145975"><label class="task-list-item-label" for="task-item-4145975"> 表示该项目已完成</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5887879"><label class="task-list-item-label" for="task-item-5887879"> 表示该项目未完成；</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6424621"><label class="task-list-item-label" for="task-item-6424621"> 表示该项目已完成</label></li>
 </ul>
 <h3 id="引用">引用</h3>
 <pre><code>&gt; 这是一个引用
@@ -765,41 +915,6 @@ else:
 </code></pre>
 <hr>
 <hr>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[深情的致谢]]></title>
-        <id>https://lichuanqi.github.io/shen-qing-de-zhi-xie/</id>
-        <link href="https://lichuanqi.github.io/shen-qing-de-zhi-xie/">
-        </link>
-        <updated>2022-04-07T09:02:03.000Z</updated>
-        <content type="html"><![CDATA[<blockquote>
-<p>以下所有文字均来源于硕士学位论文致谢部分</p>
-</blockquote>
-<p>时光荏苒，白驹过隙。转眼间三年的硕士生活即将结束，距离毕业仅有两月之遥。回首在交大学习、生活和工作的三年，积淀了很多的经历和感悟，专业知识和实践能力得到了很大的提升。而这些美好的时光即将成为回忆，成为青春永远的印记封存在我的心底。在硕士学位论文完成之际，向所有给过我帮助、支持和鼓励的人深情的道一句感谢。</p>
-<p>衷心感谢恩师谢征宇老师对我的淳淳教诲和悉心关怀，本文的研究工作是在谢征宇老师的悉心指导下完成的。在科研上，谢老师为我提供了良好的研究条件和平台。在论文上，谢老师为我提供了有力的指导和督促，从论文的选题、框架设计、开题到后来论文正文的撰写和修改，都给了我很多的宝贵意见。在生活上，谢老师为人温柔随和，给予了我极大的关系和帮助。谢征宇老师渊博的知识、开阔的视野、敏锐的思维、认真负责的工作态度、严谨的科研态度都影响着我后续的工作和生活，也值得我终生学习。</p>
-<p>感谢北京冬奥组委交通部场馆交通处的周永杰处长、韩靖副处长、史婧轩、韩兆峰、孙瑞平、朱渊、王文胜、陈庆虎、王晓峰、赵征、王玥，感谢他们在实习期间给我的指导、帮助和关心。在场馆交通处实习的两年是充实、精彩、难忘的，也是我人生中成长最快的两年。能够在简约、安全、精彩的冬奥会和冬残奥会中贡献自己的微薄之力，这将是我一生中刻骨铭心的经历。</p>
-<p>感谢课题组的柳青红师姐、管玲师兄、曹志威师兄、孙雨萌师姐、闫香玲师姐、李永玲、郭婷、莫正倩、潘璠、陈俊明，在科研过程中他们给了我很多的鼓励和帮助，也让我的科研生活多姿多彩，和他们一起度过的这段美好时光是难以忘记的。</p>
-<p>感谢舍友廉天翔同学、魏东华同学、廖志文同学、陆振聪同学，朝夕相处的三年时光里，他们在学习、生活上给了我很多的帮助和关心。</p>
-<p>感谢赵冰蒂同学的陪伴、支持和帮助，感谢她陪我走过人生中最美好的大学四年和硕士三年。</p>
-<p>感谢父母含辛茹苦的培养和悉心照顾，正是有了他们对我精神上和物质上的支持，才使我二十几年来可以全身心投入学业，我的求学之路才能一帆风顺。</p>
-<p>感谢岁月与困难对我的磨砺。</p>
-<p>最后，感谢百忙之中参加评阅、答辩的各位专家、教授！</p>
-<p>李传<br>
-2022年4月7日</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[冬奥会已圆满结束 冬残奥会即将开幕]]></title>
-        <id>https://lichuanqi.github.io/dong-ao-hui-yi-yuan-man-jie-shu-dong-can-ao-hui-ji-jiang-kai-mu/</id>
-        <link href="https://lichuanqi.github.io/dong-ao-hui-yi-yuan-man-jie-shu-dong-can-ao-hui-ji-jiang-kai-mu/">
-        </link>
-        <updated>2022-02-26T15:07:38.000Z</updated>
-        <content type="html"><![CDATA[<p>2022年2月26日，冬奥会闭幕式结束第6天，和预计的相差不大，转换期相比赛时清闲了很多，虽然也会偶然奋战到晚上十一点，但是只是偶尔。</p>
-<p>今天是我的夜班，一个人的单间，不用担心被呼噜声吵到 👏。一直以为我的睡眠质量很好，好到不会受到呼噜声影响入睡，也许是好久没有感受这种氛围了。直到某一天晚上，被呼噜声喜提难得的失眠，发现对自己还是有点太自信了。</p>
-<p>距离实习结束预计还有两周，心情很复杂，既想快点结束又不想结束。想快点结束逃离这个地方，逃离这个让人心寒的地方；不想结束是因为回到学校马上就要准备毕业论文，而且剩下的时间也不多了。</p>
-<p><img src="https://lichuanqi.github.io/post-images/1645888856023.jpg" alt="" loading="lazy"><br>
-图：2022年2月25日在北京首钢滑雪大跳台观赛单板滑雪男子大跳台比赛决赛，苏翊鸣获得北京冬奥会单板滑雪男子大跳台比赛金牌。</p>
 ]]></content>
     </entry>
 </feed>

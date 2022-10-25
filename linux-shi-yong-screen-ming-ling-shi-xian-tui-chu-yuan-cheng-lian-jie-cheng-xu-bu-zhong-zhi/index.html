@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>新年新气象，博客搬家至Github。 | 一艘大轮船</title>
+<title>Linux使用screen命令实现退出远程连接程序不终止 | 一艘大轮船</title>
 
 <link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1666658890150">
 
@@ -101,17 +101,38 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    新年新气象，博客搬家至Github。
+                    Linux使用screen命令实现退出远程连接程序不终止
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2022-02-01 ·
+                        · 2022-10-21 ·
                     </time>
                     
                 </div>
                 <div class="post-content">
-                    <p>2月1日，之前一直在续费的阿里学生机到期了，而且不能继续白菜价续费了。😅</p>
-<p>决定搬家到Github，采用Gride+Github的方案。👍</p>
+                    <h1 id="1-介绍">1 介绍</h1>
+<p>screen命令类似于“虚拟桌面”的概念，可以启动一个Linux下的虚拟桌面，在其中可以和普通终端一样执行各种命令。可以实现远程操作服务器把程序运行起来，退出远程后程序不终止</p>
+<h1 id="2-安装">2 安装</h1>
+<pre><code class="language-bash"># 检查是否安装
+screen -ls
+# 安装
+sudo apt install screen
+</code></pre>
+<h1 id="3-使用">3 使用</h1>
+<pre><code class="language-bash"># 创建窗口
+screen -S name
+# 退出当前窗口
+ctrl +a d
+# 查看已创建窗口
+screen -ls
+# 关闭窗口
+ctrl+d
+
+# 进入名为name的窗口
+screen -r name
+# 远程连接进入screen窗口后突然掉线，重连遇到进不去窗口时可以通过以下命令踢掉上一个进入窗口的进程，然后进入窗口
+screen -D -r name
+</code></pre>
 
                 </div>
             </article>
@@ -120,14 +141,14 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://lichuanqi.github.io/hello-gridea/" class="post-title gt-a-link">
-                    Hello Gridea
+                <a href="https://lichuanqi.github.io/wu-lian-wang-wei-xing-chong-li-chuan-gan-qi-diao-shi-ji-lu/" class="post-title gt-a-link">
+                    物联网微型重力传感器调试记录
                 </a>
             </div>
         
 
         
-            <span id="/xin-nian-xin-qi-xiang-bo-ke-ban-jia-zhi-github//" class="leancloud_visitors" data-flag-title="新年新气象，博客搬家至Github。">
+            <span id="/linux-shi-yong-screen-ming-ling-shi-xian-tui-chu-yuan-cheng-lian-jie-cheng-xu-bu-zhong-zhi//" class="leancloud_visitors" data-flag-title="Linux使用screen命令实现退出远程连接程序不终止">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count">0</i>
             </span>
