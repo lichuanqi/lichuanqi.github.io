@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>Conda | 一艘大轮船</title>
+<title>Conda虚拟环境在不同电脑间的迁移 | 一艘大轮船</title>
 
 <link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1668054393962">
 
@@ -25,11 +25,11 @@
 
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
 </head>
 <body>
 <div class="main gt-bg-theme-color-first">
-    <div class="main-content">
-        <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="/">
         <img class="user-avatar" src="/images/avatar.png" alt="头像">
         <div class="site-name gt-c-content-color-first">
@@ -97,31 +97,39 @@
     }
 </script>
 
-        <div class="current-tag-container">
-            <h2 class="title gt-c-content-color-first">
-                #Conda
-            </h2>
-        </div>
-        <div class="post-list-container">
-    <div class="post-inner">
-        
-            <div class="post gt-bg-theme-color-second">
-                <div class="post-left">
-                    <div>
-                        
-                        <a href="https://lichuanqi.github.io/conda-xu-ni-huan-jing-zai-bu-tong-dian-nao-jian-de-qian-yi/">
-                            <span class="post-title gt-c-content-color-first">Conda虚拟环境在不同电脑间的迁移</span>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Conda虚拟环境在不同电脑间的迁移
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-11-10 ·
+                    </time>
+                    
+                        <a href="https://lichuanqi.github.io/tag/RtCfiQBhol/" class="post-tags">
+                            # Conda
                         </a>
-                    </div>
-                    <div class="gt-post-content post-abstract gt-c-content-color-second">
-                        在线迁移
-在目标设备可以正常联网的情况下，导出pip清单然后重新在线下载包、安装。缺点是还需要重新花时间下载，有些包的版本可能会找不到。
-# 源电脑导出 conda 清单
+                    
+                        <a href="https://lichuanqi.github.io/tag/Qf-y-gGUQH/" class="post-tags">
+                            # python
+                        </a>
+                    
+                        <a href="https://lichuanqi.github.io/tag/QfGBi1jUn/" class="post-tags">
+                            # 分类-工作
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <h1 id="在线迁移">在线迁移</h1>
+<p>在目标设备可以正常联网的情况下，导出pip清单然后重新在线下载包、安装。缺点是还需要重新花时间下载，有些包的版本可能会找不到。</p>
+<pre><code># 源电脑导出 conda 清单
 conda {env_name} export &gt; {conda_list_name}
 conda env export &gt; conda.yaml
-
-conda.yaml内容如下
-name: tra
+</code></pre>
+<p>conda.yaml内容如下</p>
+<pre><code>name: tra
 channels:
   - defaults
 dependencies:
@@ -191,77 +199,103 @@ dependencies:
     - you-get==0.4.1555
     - zipp==3.8.1
 prefix: D:\Program\miniconda3\envs\tra
-
-以上代码会把pip list下的所有包都包含进来，如果想只打包某个项目的包可以使用pipreqs。
-# 源电脑导出 pip 清单
+</code></pre>
+<p>以上代码会把pip list下的所有包都包含进来，如果想只打包某个项目的包可以使用pipreqs。</p>
+<pre><code># 源电脑导出 pip 清单
 pipreqs {project_path} {requirements_name}
 pipreqs ./ --encoding=utf8
 
 #  
+&lt;!-- more --&gt;
+requirements.txt
+folium==0.13.0
+imageio==2.16.0
+loguru==0.6.0
+matplotlib==3.5.1
+numba==0.54.1
+opencv_python==3.4.3.18
+pandas==1.3.5
+pyaudio==0.2.12
+pyecharts==1.9.1
+pyparsing==3.0.6
+PyYAML==6.0
+requests==2.28.1
+scikit_image==0.19.2
+scipy==1.7.3
+skimage==0.0
+sympy==1.11.1
+</code></pre>
+<p>目标电脑新建虚拟环境重新安装库</p>
+<!-- more -->
+<pre><code>conda env create -f conda.yaml
+</code></pre>
+<h1 id="离线迁移">离线迁移</h1>
+<p>在目标电脑不能联网的情况下需要把源电脑conda环境整理打包迁移，在目标电脑上将环境解压到conda环境的保存路径下，如果解压到自己设定的路径，还需要将路径保存到conda环境保存路径的列表中</p>
+<pre><code># 源电脑打包
+pip install conda-pack
+conda pack -n {env_name} -o {name.tar.gz}
+conda pack
 
+# 目标电脑解压
+tar -xzf {name.tar.gz} -C {path/env_name}
+tar - E:/tra.tat.gz -c D:/CODE/conda_env/tra
 
-                    </div>
-                    <div class="post-info">
-                        <time class="post-time gt-c-content-color-first">
-                            发布于 · 2022-11-10 ·
-                        </time>
-                        
-                            <a href="https://lichuanqi.github.io/tag/RtCfiQBhol/" class="post-tag">
-                                # Conda
-                            </a>
-                        
-                            <a href="https://lichuanqi.github.io/tag/Qf-y-gGUQH/" class="post-tag">
-                                # python
-                            </a>
-                        
-                            <a href="https://lichuanqi.github.io/tag/QfGBi1jUn/" class="post-tag">
-                                # 分类-工作
-                            </a>
-                        
-                    </div>
+# 将路径添加到conda环境的保存路径
+conda config --add env_dirs D:/CODE/conda_env
+
+# conda env list就可以看到虚拟环境了
+</code></pre>
+
                 </div>
-                
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://lichuanqi.github.io/linux-shi-yong-screen-ming-ling-shi-xian-tui-chu-yuan-cheng-lian-jie-cheng-xu-bu-zhong-zhi/" class="post-title gt-a-link">
+                    Linux使用screen命令实现退出远程连接程序不终止
+                </a>
             </div>
         
-            <div class="post gt-bg-theme-color-second">
-                <div class="post-left">
-                    <div>
-                        
-                        <a href="https://lichuanqi.github.io/deepin-an-zhuang-miniconda-guan-li-python-huan-jing/">
-                            <span class="post-title gt-c-content-color-first">deepin安装miniconda管理python环境</span>
-                        </a>
-                    </div>
-                    <div class="gt-post-content post-abstract gt-c-content-color-second">
-                        
-                    </div>
-                    <div class="post-info">
-                        <time class="post-time gt-c-content-color-first">
-                            发布于 · 2022-04-10 ·
-                        </time>
-                        
-                            <a href="https://lichuanqi.github.io/tag/WUKUC4Ebh/" class="post-tag">
-                                # Deepin
-                            </a>
-                        
-                            <a href="https://lichuanqi.github.io/tag/RtCfiQBhol/" class="post-tag">
-                                # Conda
-                            </a>
-                        
-                            <a href="https://lichuanqi.github.io/tag/Qf-y-gGUQH/" class="post-tag">
-                                # python
-                            </a>
-                        
-                    </div>
-                </div>
-                
-            </div>
+
         
-    </div>
-</div>
-        <div class="pagination-container">
-    
-    
-</div>
+            <span id="/conda-xu-ni-huan-jing-zai-bu-tong-dian-nao-jian-de-qian-yi//" class="leancloud_visitors" data-flag-title="Conda虚拟环境在不同电脑间的迁移">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: '6tpXtVwCieuX1HvFcSr1OvAu-gzGzoHsz',
+		appKey: 'teJbUiYKhUUEebFpwXbYiMwx',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: true,
+		placeholder: '欢迎评论啊~~',
+		visitor: true,
+	});
+</script>
+
+        
 
         <div class="site-footer gt-c-content-color-first">
     <div class="slogan gt-c-content-color-first">分享资源 记录生活 致敬开源</div>
