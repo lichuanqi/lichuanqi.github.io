@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>深情的致谢 | 一艘大轮船</title>
+<title>Ubuntu docker安装MySQL局域网内 | 一艘大轮船</title>
 
 <link rel="shortcut icon" href="https://lichuanqi.github.io/favicon.ico?v=1668667673943">
 
@@ -101,29 +101,137 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    深情的致谢
+                    Ubuntu docker安装MySQL局域网内
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2022-04-07 ·
+                        · 2022-11-17 ·
                     </time>
+                    
+                        <a href="https://lichuanqi.github.io/tag/cfPu8MSLV/" class="post-tags">
+                            # Ubuntu
+                        </a>
+                    
+                        <a href="https://lichuanqi.github.io/tag/QfGBi1jUn/" class="post-tags">
+                            # 分类-工作
+                        </a>
                     
                 </div>
                 <div class="post-content">
-                    <blockquote>
-<p>以下所有文字均来源于硕士学位论文致谢部分</p>
-</blockquote>
-<p>时光荏苒，白驹过隙。转眼间三年的硕士生活即将结束，距离毕业仅有两月之遥。回首在交大学习、生活和工作的三年，积淀了很多的经历和感悟，专业知识和实践能力得到了很大的提升。而这些美好的时光即将成为回忆，成为青春永远的印记封存在我的心底。在硕士学位论文完成之际，向所有给过我帮助、支持和鼓励的人深情的道一句感谢。</p>
-<p>衷心感谢恩师谢征宇老师对我的淳淳教诲和悉心关怀，本文的研究工作是在谢征宇老师的悉心指导下完成的。在科研上，谢老师为我提供了良好的研究条件和平台。在论文上，谢老师为我提供了有力的指导和督促，从论文的选题、框架设计、开题到后来论文正文的撰写和修改，都给了我很多的宝贵意见。在生活上，谢老师为人温柔随和，给予了我极大的关系和帮助。谢征宇老师渊博的知识、开阔的视野、敏锐的思维、认真负责的工作态度、严谨的科研态度都影响着我后续的工作和生活，也值得我终生学习。</p>
-<p>感谢北京冬奥组委交通部场馆交通处的周永杰处长、韩靖副处长、史婧轩、韩兆峰、孙瑞平、朱渊、王文胜、陈庆虎、王晓峰、赵征、王玥，感谢他们在实习期间给我的指导、帮助和关心。在场馆交通处实习的两年是充实、精彩、难忘的，也是我人生中成长最快的两年。能够在简约、安全、精彩的冬奥会和冬残奥会中贡献自己的微薄之力，这将是我一生中刻骨铭心的经历。</p>
-<p>感谢课题组的柳青红师姐、管玲师兄、曹志威师兄、孙雨萌师姐、闫香玲师姐、李永玲、郭婷、莫正倩、潘璠、陈俊明，在科研过程中他们给了我很多的鼓励和帮助，也让我的科研生活多姿多彩，和他们一起度过的这段美好时光是难以忘记的。</p>
-<p>感谢舍友廉天翔同学、魏东华同学、廖志文同学、陆振聪同学，朝夕相处的三年时光里，他们在学习、生活上给了我很多的帮助和关心。</p>
-<p>感谢赵冰蒂同学的陪伴、支持和帮助，感谢她陪我走过人生中最美好的大学四年和硕士三年。</p>
-<p>感谢父母含辛茹苦的培养和悉心照顾，正是有了他们对我精神上和物质上的支持，才使我二十几年来可以全身心投入学业，我的求学之路才能一帆风顺。</p>
-<p>感谢岁月与困难对我的磨砺。</p>
-<p>最后，感谢百忙之中参加评阅、答辩的各位专家、教授！</p>
-<p>李传<br>
-2022年4月7日</p>
+                    <h2 id="1安装docker">1.安装docker</h2>
+<p>远程连接到服务器后查看是否已安装docker，没有的话安装一下</p>
+<pre><code class="language-bash"># 查看是否安装
+docker
+# 安装
+sudo apt install docker.io
+</code></pre>
+<h2 id="2学习下docker命令">2.学习下docker命令</h2>
+<pre><code class="language-bash"># 查看系统信息
+docker info 
+
+# 查找docker仓库中的镜像
+docker search
+# 查看本地镜像
+docker images
+# 拉取docker仓库的镜像
+docker pull
+
+# 创建容器
+docker create 
+# 开启容器
+docker start
+# 重启容器
+docker restart
+# 关闭容器
+docker stop
+# 查看正在运行的容器
+docker ps -a
+# 查看容器的所有信息
+docker inspect
+
+# 删除容器
+docker rm
+# 运行一个容器
+docker run
+# 进入某个容器
+docker exec
+
+# 监控容器运行情况
+sudo docker stats
+</code></pre>
+<h2 id="3拉取mysql镜像">3.拉取mysql镜像</h2>
+<pre><code class="language-bash"># 搜索一下
+sudo docker search mysql
+
+# 第一个STARS最多的官方镜像拉拉到本地
+sudo docker pull mysql
+</code></pre>
+<h2 id="4启动mysql容器">4.启动mysql容器</h2>
+<pre><code class="language-bash"># 新建一个文件夹保存数据
+mkdir mysql
+
+# 先简单启动一下容器
+sudo docker run -p 3306:3306 --name mysql \
+    -e MYSQL_ROOT_PASSWORD=123456 \
+    -d mysql:latest
+
+# 将容器内的mysql配置文件复制到本地
+sudo docker cp 9d65155d846e:/etc/mysql/ /home/xxtc/lichuan/mysql/conf
+# 停止容易然后删除
+sudo docker stop 9d65155d846e
+sudo docker rm 9d65155d846e
+
+# 启动容器,将配置文件,数据,日志,映射到本机
+sudo docker run -p 3306:3306 --name mysql \
+    -v /home/xxtc/lichuan/mysql/conf:/etc/mysql/conf.d \
+    -v /home/xxtc/lichuan/mysql/data:/var/lib/mysql \
+    -v /home/xxtc/lichuan/mysql/logs:/var/log/mysql \
+    -e MYSQL_ROOT_PASSWORD=123456 \
+    -d mysql:latest
+
+# 查看正在运行的容器
+sudo docker ps
+</code></pre>
+<p>如果正在运行的容器中没从日志看一下具体哪里报错了</p>
+<pre><code class="language-bash"># 查看容器日志
+sudo docker logs 607ecbdc0345
+</code></pre>
+<h2 id="5进入mysql容器">5.进入mysql容器</h2>
+<p>mysql容器正常启动之后就可以进入容器操作数据库了</p>
+<pre><code class="language-bash"># 进入Docker容器内
+sudo docker exec -it mysql bash
+
+# 链接mysql
+mysql -uroot -p123456
+# 查看数据库状态
+status
+
+# 查看都有什么表
+show databases
+# 切换数据库
+use mysql
+
+# 更新密码
+update user set authentication_string = password('root') where user = '123456Q@';
+# 开放局域网访问
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
+
+# 推出容器
+exit
+</code></pre>
+<h2 id="6设置开机自启动">6.设置开机自启动</h2>
+<pre><code class="language-bash"># 查看开机自启应用
+systemctl list-unit-files | grep enabled
+
+# Ubuntu下设置docker开机自启
+sudo systemctl enable docker
+
+# 设置容器开机自启
+# 如果当前容器没有启动可以在启动时增加以下参数
+sudo docker run --restart=always ...
+# 如果容器已启动可以追加参数
+sudo docker update --restart=always 607ecbdc0345
+</code></pre>
 
                 </div>
             </article>
@@ -132,14 +240,14 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://lichuanqi.github.io/dong-ao-hui-yi-yuan-man-jie-shu-dong-can-ao-hui-ji-jiang-kai-mu/" class="post-title gt-a-link">
-                    冬奥会已圆满结束 冬残奥会即将开幕
+                <a href="https://lichuanqi.github.io/conda-xu-ni-huan-jing-zai-bu-tong-dian-nao-jian-de-qian-yi/" class="post-title gt-a-link">
+                    Conda虚拟环境在不同电脑间的迁移
                 </a>
             </div>
         
 
         
-            <span id="/shen-qing-de-zhi-xie//" class="leancloud_visitors" data-flag-title="深情的致谢">
+            <span id="/ubuntu-docker-an-zhuang-mysql-ju-yu-wang-nei//" class="leancloud_visitors" data-flag-title="Ubuntu docker安装MySQL局域网内">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count">0</i>
             </span>

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lichuanqi.github.io</id>
     <title>一艘大轮船</title>
-    <updated>2022-11-10T08:20:44.554Z</updated>
+    <updated>2022-11-17T06:48:00.526Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lichuanqi.github.io"/>
     <link rel="self" href="https://lichuanqi.github.io/atom.xml"/>
@@ -11,114 +11,133 @@
     <icon>https://lichuanqi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, 一艘大轮船</rights>
     <entry>
+        <title type="html"><![CDATA[Ubuntu docker安装MySQL局域网内]]></title>
+        <id>https://lichuanqi.github.io/ubuntu-docker-an-zhuang-mysql-ju-yu-wang-nei/</id>
+        <link href="https://lichuanqi.github.io/ubuntu-docker-an-zhuang-mysql-ju-yu-wang-nei/">
+        </link>
+        <updated>2022-11-17T06:46:21.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1安装docker">1.安装docker</h2>
+<p>远程连接到服务器后查看是否已安装docker，没有的话安装一下</p>
+<pre><code class="language-bash"># 查看是否安装
+docker
+# 安装
+sudo apt install docker.io
+</code></pre>
+<h2 id="2学习下docker命令">2.学习下docker命令</h2>
+<pre><code class="language-bash"># 查看系统信息
+docker info 
+
+# 查找docker仓库中的镜像
+docker search
+# 查看本地镜像
+docker images
+# 拉取docker仓库的镜像
+docker pull
+
+# 创建容器
+docker create 
+# 开启容器
+docker start
+# 重启容器
+docker restart
+# 关闭容器
+docker stop
+# 查看正在运行的容器
+docker ps -a
+# 查看容器的所有信息
+docker inspect
+
+# 删除容器
+docker rm
+# 运行一个容器
+docker run
+# 进入某个容器
+docker exec
+
+# 监控容器运行情况
+sudo docker stats
+</code></pre>
+<h2 id="3拉取mysql镜像">3.拉取mysql镜像</h2>
+<pre><code class="language-bash"># 搜索一下
+sudo docker search mysql
+
+# 第一个STARS最多的官方镜像拉拉到本地
+sudo docker pull mysql
+</code></pre>
+<h2 id="4启动mysql容器">4.启动mysql容器</h2>
+<pre><code class="language-bash"># 新建一个文件夹保存数据
+mkdir mysql
+
+# 先简单启动一下容器
+sudo docker run -p 3306:3306 --name mysql \
+    -e MYSQL_ROOT_PASSWORD=123456 \
+    -d mysql:latest
+
+# 将容器内的mysql配置文件复制到本地
+sudo docker cp 9d65155d846e:/etc/mysql/ /home/xxtc/lichuan/mysql/conf
+# 停止容易然后删除
+sudo docker stop 9d65155d846e
+sudo docker rm 9d65155d846e
+
+# 启动容器,将配置文件,数据,日志,映射到本机
+sudo docker run -p 3306:3306 --name mysql \
+    -v /home/xxtc/lichuan/mysql/conf:/etc/mysql/conf.d \
+    -v /home/xxtc/lichuan/mysql/data:/var/lib/mysql \
+    -v /home/xxtc/lichuan/mysql/logs:/var/log/mysql \
+    -e MYSQL_ROOT_PASSWORD=123456 \
+    -d mysql:latest
+
+# 查看正在运行的容器
+sudo docker ps
+</code></pre>
+<p>如果正在运行的容器中没从日志看一下具体哪里报错了</p>
+<pre><code class="language-bash"># 查看容器日志
+sudo docker logs 607ecbdc0345
+</code></pre>
+<h2 id="5进入mysql容器">5.进入mysql容器</h2>
+<p>mysql容器正常启动之后就可以进入容器操作数据库了</p>
+<pre><code class="language-bash"># 进入Docker容器内
+sudo docker exec -it mysql bash
+
+# 链接mysql
+mysql -uroot -p123456
+# 查看数据库状态
+status
+
+# 查看都有什么表
+show databases
+# 切换数据库
+use mysql
+
+# 更新密码
+update user set authentication_string = password('root') where user = '123456Q@';
+# 开放局域网访问
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
+
+# 推出容器
+exit
+</code></pre>
+<h2 id="6设置开机自启动">6.设置开机自启动</h2>
+<pre><code class="language-bash"># 查看开机自启应用
+systemctl list-unit-files | grep enabled
+
+# Ubuntu下设置docker开机自启
+sudo systemctl enable docker
+
+# 设置容器开机自启
+# 如果当前容器没有启动可以在启动时增加以下参数
+sudo docker run --restart=always ...
+# 如果容器已启动可以追加参数
+sudo docker update --restart=always 607ecbdc0345
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Conda虚拟环境在不同电脑间的迁移]]></title>
         <id>https://lichuanqi.github.io/conda-xu-ni-huan-jing-zai-bu-tong-dian-nao-jian-de-qian-yi/</id>
         <link href="https://lichuanqi.github.io/conda-xu-ni-huan-jing-zai-bu-tong-dian-nao-jian-de-qian-yi/">
         </link>
         <updated>2022-11-10T02:41:26.000Z</updated>
-        <summary type="html"><![CDATA[<h1 id="在线迁移">在线迁移</h1>
-<p>在目标设备可以正常联网的情况下，导出pip清单然后重新在线下载包、安装。缺点是还需要重新花时间下载，有些包的版本可能会找不到。</p>
-<pre><code># 源电脑导出 conda 清单
-conda {env_name} export &gt; {conda_list_name}
-conda env export &gt; conda.yaml
-</code></pre>
-<p>conda.yaml内容如下</p>
-<pre><code>name: tra
-channels:
-  - defaults
-dependencies:
-  - ca-certificates=2021.10.26=haa95532_2
-  - certifi=2021.10.8=py37haa95532_0
-  - openssl=1.1.1l=h2bbff1b_0
-  - pip=21.2.4=py37haa95532_0
-  - python=3.7.11=h6244533_0
-  - setuptools=58.0.4=py37haa95532_0
-  - sqlite=3.37.0=h2bbff1b_0
-  - vc=14.2=h21ff451_1
-  - vs2015_runtime=14.27.29016=h5e58377_2
-  - wheel=0.37.1=pyhd3eb1b0_0
-  - wincertstore=0.2=py37haa95532_2
-  - pip:
-    - albumentations==1.1.0
-    - charset-normalizer==2.1.1
-    - colorama==0.4.4
-    - conda-pack==0.6.0
-    - cycler==0.11.0
-    - docopt==0.6.2
-    - et-xmlfile==1.1.0
-    - fonttools==4.28.5
-    - idna==3.3
-    - imageio==2.16.0
-    - importlib-metadata==4.12.0
-    - jinja2==3.1.2
-    - joblib==1.1.0
-    - kiwisolver==1.3.2
-    - llvmlite==0.37.0
-    - loguru==0.6.0
-    - markupsafe==2.1.1
-    - matplotlib==3.5.1
-    - networkx==2.6.3
-    - numba==0.54.1
-    - numpy==1.20.3
-    - opencv-python==3.4.3.18
-    - openpyxl==3.0.10
-    - packaging==21.3
-    - pandas==1.3.5
-    - pillow==9.0.0
-    - pipreqs==0.4.11
-    - prettytable==3.3.0
-    - pyecharts==1.9.1
-    - pyparsing==3.0.6
-    - python-dateutil==2.8.2
-    - pytz==2022.2.1
-    - pywavelets==1.2.0
-    - pyyaml==6.0
-    - qudida==0.0.4
-    - requests==2.28.1
-    - scikit-image==0.19.2
-    - scikit-learn==1.0.2
-    - scipy==1.7.3
-    - simplejson==3.17.6
-    - six==1.16.0
-    - threadpoolctl==3.1.0
-    - tifffile==2021.11.2
-    - tqdm==4.62.3
-    - typing-extensions==4.1.1
-    - urllib3==1.26.11
-    - wcwidth==0.2.5
-    - win32-setctime==1.1.0
-    - xlrd==2.0.1
-    - xlwt==1.3.0
-    - yarg==0.1.9
-    - you-get==0.4.1555
-    - zipp==3.8.1
-prefix: D:\Program\miniconda3\envs\tra
-</code></pre>
-<p>以上代码会把pip list下的所有包都包含进来，如果想只打包某个项目的包可以使用pipreqs。</p>
-<pre><code># 源电脑导出 pip 清单
-pipreqs {project_path} {requirements_name}
-pipreqs ./ --encoding=utf8
-
-#  requirements.txt
-folium==0.13.0
-imageio==2.16.0
-loguru==0.6.0
-matplotlib==3.5.1
-numba==0.54.1
-opencv_python==3.4.3.18
-pandas==1.3.5
-pyaudio==0.2.12
-pyecharts==1.9.1
-pyparsing==3.0.6
-PyYAML==6.0
-requests==2.28.1
-scikit_image==0.19.2
-scipy==1.7.3
-skimage==0.0
-sympy==1.11.1
-</code></pre>
-<p>目标电脑新建虚拟环境重新安装库</p>
-]]></summary>
         <content type="html"><![CDATA[<h1 id="在线迁移">在线迁移</h1>
 <p>在目标设备可以正常联网的情况下，导出pip清单然后重新在线下载包、安装。缺点是还需要重新花时间下载，有些包的版本可能会找不到。</p>
 <pre><code># 源电脑导出 conda 清单
@@ -221,7 +240,6 @@ skimage==0.0
 sympy==1.11.1
 </code></pre>
 <p>目标电脑新建虚拟环境重新安装库</p>
-<!-- more -->
 <pre><code>conda env create -f conda.yaml
 </code></pre>
 <h1 id="离线迁移">离线迁移</h1>
@@ -462,12 +480,13 @@ class_id:0, confidence:0.9342, left_top:[183.13,122.14],right_bottom:[247.16,245
 <pre><code>python deploy/python/infer.py --model_dir models\ppyoloe_crn_s_80e_smoking_visdrone --image_file D:\Data\Smoke\test1\000067.jpg --device=cpu
 </code></pre>
 <h1 id="2-安全帽检测">2 安全帽检测</h1>
-<p>数据在实验室GPU，待更新</p>
-<h2 id="pipline-行人检测安全帽">pipline 行人检测+安全帽</h2>
-<h2 id="安全帽检测模块">安全帽检测模块</h2>
-<h3 id="数据准备">数据准备</h3>
-<p>下载数据集后解压，文件夹按照以下结构重命名</p>
-<pre><code>-- Helmet
+<h2 id="21-pipline-行人检测安全帽">2.1 pipline 行人检测+安全帽</h2>
+<p>待完成</p>
+<h2 id="22-安全帽检测模块">2.2 安全帽检测模块</h2>
+<h3 id="221-数据准备">2.2.1 数据准备</h3>
+<p>使用开源数据集，下载后解压文件夹按照以下结构重命名</p>
+<pre><code class="language-python"># paddledetection训练数据格式
+-- Helmet
   |-- Annotations
     |-- 001.jpg
     |-- ... 
@@ -479,11 +498,11 @@ class_id:0, confidence:0.9342, left_top:[183.13,122.14],right_bottom:[247.16,245
 <pre><code>paddlex --split_dataset --format VOC --dataset_dir datasets/Helmet --val_value 0.2 --test_value 0.1
 </code></pre>
 <p>完成后数据集文件结构如下</p>
-<pre><code>-- Helmet
-  |-- Annotations
+<pre><code class="language-python">-- Helmet
+  |-- JPEGImages
     |-- 001.jpg
     |-- ... 
-  |-- JPEGImages
+  |-- Annotations
     |-- 001.xml
     |-- ... 
   |-- train_list.txt
@@ -491,16 +510,19 @@ class_id:0, confidence:0.9342, left_top:[183.13,122.14],right_bottom:[247.16,245
   |-- test_list.txt
   |-- labels.txt
 </code></pre>
-<h3 id="训练">训练</h3>
-<pre><code>python -m paddle.distributed.launch --gpus 0,1 tools/train.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_Helmet.yml --use_vdl True --vdl_log_dir output/scalar --eval
+<h3 id="222-训练">2.2.2 训练</h3>
+<pre><code class="language-bash"># 开始训练
+python -m paddle.distributed.launch --gpus 0,1 tools/train.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_Helmet.yml --use_vdl True --vdl_log_dir output/scalar --eval
 
 # 可视化查看训练数据
 visualdl --logdir output/scalar --host 0.0.0.0 --port 8041
 </code></pre>
-<h3 id="评估">评估</h3>
-<pre><code class="language-python"># 评估验证集结果
-CUDA_VISIBLE_DEVICES=0 python tools/eval.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_Helmet.yml -o weights=output/ppyoloe_plus_crn_m_80e_Helmet/weights/best_model.pdparams
-# 输出
+<h3 id="223-评估">2.2.3 评估</h3>
+<pre><code class="language-bash"># 评估验证集结果
+CUDA_VISIBLE_DEVICES=0 
+python tools/eval.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_Helmet.yml -o weights=output/ppyoloe_plus_crn_m_80e_Helmet/weights/best_model.pdparams
+
+# 终端输出
 [10/17 12:24:57] ppdet.engine INFO: Eval iter: 0
 [10/17 12:25:09] ppdet.engine INFO: Eval iter: 100
 [10/17 12:25:21] ppdet.engine INFO: Eval iter: 200
@@ -510,28 +532,61 @@ CUDA_VISIBLE_DEVICES=0 python tools/eval.py -c configs/ppyoloe/ppyoloe_plus_crn_
 [10/17 12:25:57] ppdet.metrics.metrics INFO: mAP(0.50, 11point) = 61.77%
 [10/17 12:25:57] ppdet.engine INFO: Total sample number: 1000, averge FPS: 16.343893553616113
 </code></pre>
-<h3 id="动态图预测">动态图预测</h3>
-<pre><code># 预测单张图片
-CUDA_VISIBLE_DEVICES=0 python tools/infer.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_Helmet.yml -o weights=output/ppyoloe_plus_crn_m_80e_Helmet/weights/best_model.pdparams --infer_img=dataset/Helmet/JPEGImages/hard_hat_workers1783.png --output_dir output --visualize True
-# 输出
-fer_img=dataset/Helmet/JPEGImages/hard_hat_workers1783.png --output_dir output --visualize True
+<h3 id="224-动态图预测">2.2.4 动态图预测</h3>
+<pre><code class="language-bash"># 预测单张图片
+CUDA_VISIBLE_DEVICES=0 
+python tools/infer.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_Helmet.yml -o weights=output/ppyoloe_plus_crn_m_80e_Helmet/weights/best_model.pdparams --infer_img=dataset/Helmet/JPEGImages/hard_hat_workers1783.png --output_dir output --visualize True
+
+# 终端输出结果
 W1017 12:26:25.761562 788568 gpu_resources.cc:61] Please NOTE: device: 0, GPU Compute Capability: 6.1, Driver API Version: 11.6, Runtime API Version: 10.2
 W1017 12:26:25.769194 788568 gpu_resources.cc:91] device: 0, cuDNN Version: 7.6.
 [10/17 12:26:28] ppdet.utils.checkpoint INFO: Finish loading model weights: output/ppyoloe_plus_crn_m_80e_Helmet/weights/best_model.pdparams
 100%|█████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:01&lt;00:00,  1.30s/it]
 [10/17 12:26:29] ppdet.engine INFO: Detection bbox results save in output/hard_hat_workers1783.png
 </code></pre>
-<h3 id="导出">导出</h3>
-<h3 id="静态图预测">静态图预测</h3>
+<h3 id="225-动态图导出静态图">2.2.5 动态图导出静态图</h3>
+<pre><code class="language-bash">python tools/export_model.py  -c configs\ppyoloe\ppyoloe_plus_crn_m_80e_box.yml -o weights=models\ppyoloe_plus_crn_m_80e_box26_train20221111\best_model.pdparams use_gpu=false --output_dir models
+
+# 终端输出结果
+[11/13 14:30:01] ppdet.utils.checkpoint INFO: Finish loading model weights: models\ppyoloe_plus_crn_m_80e_box26_train20221111\best_model.pdparams
+[11/13 14:30:01] ppdet.engine INFO: Export inference config file to models\ppyoloe_plus_crn_m_80e_box\infer_cfg.yml
+[11/13 14:30:06] ppdet.engine INFO: Export model and saved in models\ppyoloe_plus_crn_m_80e_box
+</code></pre>
+<h3 id="226-静态图预测">2.2.6 静态图预测</h3>
+<pre><code class="language-bash"># 单张图片
+python deploy/python/infer.py --model_dir=models/ppyoloe_plus_crn_m_80e_box --image_file=D:\Data\Expressbox\images_test\1.jpg --device=cpu --save_results
+
+# 终端输出结果
+
+
+# 文件夹
+python deploy/python/infer.py --model_dir=models/ppyoloe_plus_crn_m_80e_box --image_dir=D:\Data\Expressbox\images_test --device=cpu --save_results
+
+# 终端输出结果
+Found 2 inference images in total.
+class_id:0, confidence:0.5832, left_top:[1960.35,1210.66],right_bottom:[2880.86,2070.92]
+save result to: output\1.jpg
+Test iter 0
+class_id:0, confidence:0.7591, left_top:[291.97,273.54],right_bottom:[451.52,398.73]
+save result to: output\2.jpg
+Test iter 1
+Start saving coco json files...
+The bbox result is saved to output\bbox.json
+------------------ Inference Time Info ----------------------
+total_time(ms): 1718.0, img_num: 2
+average latency time(ms): 859.00, QPS: 1.164144
+preprocess_time(ms): 84.60, inference_time(ms): 774.40, postprocess_time(ms): 0.00
+</code></pre>
 <h1 id="3-ppyoloe_plus_crn_l_80e_coco-20221015">3 ppyoloe_plus_crn_l_80e_coco 20221015</h1>
 <h2 id="31-动态图预测">3.1 动态图预测</h2>
 <pre><code>python tools/infer.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_coco.yml -o weights=models\ppyoloe\ppyoloe_plus_crn_m_80e_coco.pdparams use_gpu=false --infer_img=demo\hrnet_demo.jpg
 </code></pre>
 <h2 id="32-动态图导出静态图">3.2 动态图导出静态图</h2>
-<pre><code>python tools/export_model.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_coco.yml -o weights=models\ppyoloe\ppyoloe_plus_crn_m_80e_coco.pdparams use_gpu=false --output_dir models
+<pre><code class="language-bash">python tools/export_model.py -c configs/ppyoloe/ppyoloe_plus_crn_m_80e_coco.yml -o weights=models\ppyoloe\ppyoloe_plus_crn_m_80e_coco.pdparams use_gpu=False --output_dir models
 </code></pre>
 <h2 id="33-静态图预测">3.3 静态图预测</h2>
-<p>python deploy/python/infer.py --model_dir=models/ppyoloe_plus_crn_m_80e_coco --image_file=demo/000000014439_640x640.jpg --device=cpu</p>
+<pre><code class="language-bash">python deploy/python/infer.py --model_dir=models/ppyoloe_plus_crn_m_80e_coco --image_file=demo/000000014439_640x640.jpg --device=cpu
+</code></pre>
 <h1 id="4-picodet主体检测-20221015">4 picodet主体检测 20221015</h1>
 <h2 id="41-动态图预测">4.1 动态图预测</h2>
 <pre><code>python tools/infer.py -c configs\picodet\application\mainbody_detection\picodet_lcnet_x2_5_640_mainbody.yml --infer_dir=demo --output_dir=output  -o weights=models\picodet\picodet_PPLCNet_x2_5_mainbody_lite_v1.0_pretrained.pdparams --save_results True
@@ -931,92 +986,6 @@ sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
 2、钥匙扣购买时是按照人头对应购买的，快递丢失本人无法和其他人解释，对本人的口碑和信用造成了极坏的影响。<br>
 3、快递的收费方式为到付，快递员揽收时并没有向我询问商品是否保价。<br>
 4、顺丰官方客服两次询问并登记了商品的价值1360和索赔金额2000，均没有提出异议，本人认为已经默许同意次赔偿方案。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[deepin安装miniconda管理python环境]]></title>
-        <id>https://lichuanqi.github.io/deepin-an-zhuang-miniconda-guan-li-python-huan-jing/</id>
-        <link href="https://lichuanqi.github.io/deepin-an-zhuang-miniconda-guan-li-python-huan-jing/">
-        </link>
-        <updated>2022-04-10T03:10:41.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="背景">背景</h1>
-<p>之前一直用anaconda，偶然发现实在是太占用空间了，我只有2个环境，足足占用了7G多的空间，趁着今天手误一不小心升级了一下python版本，导致环境直接崩溃，彻底的把 anaconda 更换为 miniconda，默认的环境1000多个库也没用过，要他有何用。</p>
-<h1 id="更换步骤">更换步骤</h1>
-<h2 id="1-删除anaconda">1、删除anaconda</h2>
-<p>首先彻底删除之前安装的anaconda文件和配置信息，先删除主目录下的 ～/anaconda3 文件夹，可以手动删除，也可以使用以下代码在终端删除，亲测终端删除速度稍微快一点</p>
-<pre><code># 删除anaconda文件
-rm -rf ~/anaconda3
-</code></pre>
-<p>删除系统和用户配置信息中关于conda的代码，手动打开主目录下的 ~/.bashrc 文件删除conda的配置信息，如果没有就按 Ctrl+H 显示隐藏文件和文件夹，也可以在终端中使用vim删除。</p>
-<pre><code># vim打开 ~/.bashrc
-sudo vim ~/.bashrc
-# 删除conda相关的代码，类似下面这样的
-# &gt;&gt;&gt; conda initialize &gt;&gt;&gt;
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup=&quot;$('/home/lc/anaconda3/bin/conda' 'shell.bash' 'hook' 2&gt; /dev/null)&quot;
-if [ $? -eq 0 ]; then
-    eval &quot;$__conda_setup&quot;
-else
-    if [ -f &quot;/home/lc/anaconda3/etc/profile.d/conda.sh&quot; ]; then
-        . &quot;/home/lc/anaconda3/etc/profile.d/conda.sh&quot;
-    else
-        export PATH=&quot;/home/lc/anaconda3/bin:$PATH&quot;
-    fi
-fi
-unset __conda_setup
-# &lt;&lt;&lt; conda initialize &lt;&lt;&lt;
-# vim打开 /etc/profile
-sudo vim /etc/profile
-# 删除conda相关的代码
-</code></pre>
-<h2 id="2-下载miniconda">2、下载miniconda</h2>
-<p>可以手动从以下镜像下载，也可以使用 wget 在终端中下载，我这里下载的是最新的 Miniconda-latest-Linux-x86_64.sh</p>
-<ul>
-<li>官方镜像https://docs.conda.io/en/latest/miniconda.html</li>
-<li>Miniconda3-latest-Linux-x86_64.shhttps://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</li>
-<li>清华镜像https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/</li>
-<li>Miniconda3-latest-Linux-x86_64.shhttps://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh</li>
-</ul>
-<h2 id="3-安装miniconda">3、安装miniconda</h2>
-<p>打开深度终端，切换到刚才的下载目录，执行以下代码</p>
-<pre><code># 安装
-bash Miniconda-latest-Linux-x86_64.sh
-# 开始疯狂的enter/backspace/yes
-# 输入yes接受条约
-Do you accept the license terms? [yes|no]
-# enter，安装到默认的主目录下
-[/home/lc/miniconda3] &gt;&gt;&gt; 
-# 输入yes，自动配置环境变量
-installation finished.
-Do you wish the installer to initialize Miniconda2
-in your /home/you/.bashrc ? [yes|no]
-# 出现这个代表安装成功
-Thank you for installing Miniconda2!
-# 更新系统配置信息
-source ~/.bashrc
-# 输入以下代码，出现conda的帮助文档信息，即表明conda安装成功
-conda --help
-conda子命令的帮助文档
-conda create --help
-</code></pre>
-<h2 id="4-更改镜像源">4、更改镜像源</h2>
-<p>终端依次执行以下代码，将下载的镜像源改为清华的镜像</p>
-<pre><code>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda
-conda config --set show_channel_urls yes
-</code></pre>
-<h1 id="开始使用">开始使用</h1>
-<p>和anaconda命令一样，为了加快pip安装速度，将其镜像源改为清华，请参考《使用pypi国内镜像资源站解决Python工具包安装失败》http://www.dlc618.com/post-881.html</p>
-<pre><code># 创建虚拟环境
-conda create -n test python=3.6
-# 进入虚拟环境
-conda activate test
-# pip镜像改为清华
-pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-# pip安装库
-pip install opencv-python==3.4.3.18
-</code></pre>
 ]]></content>
     </entry>
 </feed>
